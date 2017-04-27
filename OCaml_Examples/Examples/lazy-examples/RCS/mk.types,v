@@ -1,0 +1,81 @@
+head	361.4;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+361.4
+date	2012.02.22.03.26.32;	author -;	state -;
+branches;
+next	361.3;
+
+361.3
+date	2006.03.03.22.44.56;	author -;	state -;
+branches;
+next	361.2;
+
+361.2
+date	2006.03.03.22.44.17;	author -;	state -;
+branches;
+next	361.1;
+
+361.1
+date	2006.03.03.22.43.58;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+361.4
+log
+@-
+@
+text
+@#!/bin/sh -x
+cid *.ml *.scm $0
+for file in *.ml
+do
+	ocamlc -i $file >${file}i.types
+done
+
+mkpspdf Lazy-listing.ps *.scm *.ml*
+@
+
+
+361.3
+log
+@-
+@
+text
+@d7 2
+a8 3
+enscript -GjC -p Lazy-listing.ps *.scm *.ml*
+ghostview -magstep 1 Lazy-listing.ps &
+ps2pdf Lazy-listing.ps
+@
+
+
+361.2
+log
+@-
+@
+text
+@d7 3
+a9 1
+enscript -GjC -pLazy-listing.ps *.scm *.ml*
+@
+
+
+361.1
+log
+@-
+@
+text
+@d7 1
+a7 1
+enscript -GjC -pListing.ps *.scm *.ml*
+@

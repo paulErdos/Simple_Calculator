@@ -1,0 +1,131 @@
+head	361.3;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+361.3
+date	2014.11.17.22.03.17;	author -;	state -;
+branches;
+next	361.2;
+
+361.2
+date	2011.04.25.21.16.06;	author -;	state -;
+branches;
+next	361.1;
+
+361.1
+date	2006.03.03.22.33.46;	author -;	state -;
+branches;
+next	330.1;
+
+330.1
+date	2003.02.03.18.42.46;	author -;	state -;
+branches;
+next	329.1;
+
+329.1
+date	2002.12.20.20.13.51;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+361.3
+log
+@-
+@
+text
+@(* $Id: factorial.ml,v 361.2 2011-04-25 14:16:06-07 - - $ *)
+(* Factorial example. *)
+
+open Printf;;
+
+(*
+let rec fac = function
+    | 0 -> 1
+    | n when n > 0 -> n * fac (n - 1)
+    | n -> invalid_arg ("fac (" ^ (string_of_int n) ^ ")");;
+*)
+
+let fac n =
+    let rec fac' n' r' = match n' with
+        | 0 -> r'
+        | n -> fac' (n' - 1) (n' * r')
+    in  if n < 0 then invalid_arg ("fac (" ^ (string_of_int n) ^ ")")
+                 else fac' n 1;;
+    
+
+let printfac n = (printf "fac %d = %d\n" n (fac n);
+                  flush stdout);;
+
+printfac 0;;
+printfac 1;;
+printfac 2;;
+printfac 5;;
+printfac 10;;
+printfac 20;;
+printfac (-5);;
+
+@
+
+
+361.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: factorial.ml,v 361.1 2006-03-03 14:33:46-08 - - $ *)
+d29 1
+@
+
+
+361.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: factorial.ml,v 330.1 2003-02-03 10:42:46-08 - - $ *)
+d6 1
+d11 9
+@
+
+
+330.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: factorial.ml,v 329.1 2002-12-20 12:13:51-08 - - $ *)
+d9 1
+a9 1
+    | n -> invalid_arg (string_of_int n);;
+@
+
+
+329.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: factorial.sml,v 321.3 2002-02-11 16:18:11-08 - - $ *)
+d4 2
+d11 9
+a19 4
+fac 0;;
+fac 1;;
+fac 2;;
+fac (-5);;
+@

@@ -1,0 +1,75 @@
+head	321.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+321.1
+date	2002.02.08.01.58.14;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+321.1
+log
+@-
+@
+text
+@# $Id: Running-MosML,v 321.2 2002-02-07 17:58:03-08 - - $
+
+How to run Moscow ML.
+
+1. Make sure you have the mosml binary in your $path env variable:
+
+set path=($path /afs/cats.ucsc.edu/courses/cmps112-wm/usr/mosml/bin)
+
+2. Running it interactively.  Call up mosml from the command
+   line prompt.  Exit with the EOF signal (^D) or by calling
+   quit();
+________________________________________________________________
+% mosml
+Moscow ML version 2.00 (June 2000)
+Enter `quit();' to quit.
+- val a = 3;
+> val a = 3 : int
+- val b = 4;
+> val b = 4 : int
+- a + b;
+> val it = 7 : int
+- ^D
+________________________________________________________________
+
+2. Run it by redirecting stdin with your program in a file.
+________________________________________________________________
+% mosml < factorial.sml
+Moscow ML version 2.00 (June 2000)
+Enter `quit();' to quit.
+- > exn Factorial = Factorial : exn
+- > val fac = fn : int -> int
+- > val it = 720 : int
+- 
+________________________________________________________________
+
+3. Run it from the command line and use a program in a file.
+________________________________________________________________
+% mosml
+Moscow ML version 2.00 (June 2000)
+Enter `quit();' to quit.
+- use "factorial.sml";
+[opening file "factorial.sml"]
+> exn Factorial = Factorial : exn
+> val fac = fn : int -> int
+> val it = 720 : int
+[closing file "factorial.sml"]
+> val it = () : unit
+- fac(8);
+> val it = 40320 : int
+- quit();
+________________________________________________________________
+
+@

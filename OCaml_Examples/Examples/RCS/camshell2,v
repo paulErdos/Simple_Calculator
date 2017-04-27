@@ -1,0 +1,29 @@
+head	347.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+347.1
+date	2004.09.24.20.30.23;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+347.1
+log
+@-
+@
+text
+@#!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/ocaml/bin/ocaml
+(* $Id: camshell,v 347.3 2004-09-24 13:28:07-07 - - $ *)
+let printf = Printf.printf;;
+let aiteri = Array.iteri;;
+printf "executable_name = %s\n" Sys.executable_name;;
+aiteri (fun i s -> printf "argv.(%d) = %s\n" i s) Sys.argv;;
+@

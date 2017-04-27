@@ -1,0 +1,50 @@
+head	1.2;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.2
+date	2014.12.05.21.28.01;	author -;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2014.12.05.21.26.38;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@-
+@
+text
+@#!/bin/sh -x
+cid *.ml *.scm $0
+for file in *.ml
+do
+   cid $file
+   ocamlc -i $file >$file.types
+   mkpspdf $file.ps $file $file.types
+done
+
+@
+
+
+1.1
+log
+@-
+@
+text
+@d5 3
+a7 1
+	ocamlc -i $file >${file}i.types
+a9 1
+mkpspdf Lazy-listing.ps *.scm *.ml*
+@

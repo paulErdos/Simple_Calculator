@@ -1,0 +1,187 @@
+head	346.4;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+346.4
+date	2014.11.17.21.52.06;	author -;	state -;
+branches;
+next	346.3;
+
+346.3
+date	2004.08.18.00.44.17;	author -;	state -;
+branches;
+next	346.2;
+
+346.2
+date	2004.08.18.00.43.54;	author -;	state -;
+branches;
+next	346.1;
+
+346.1
+date	2004.08.18.00.42.30;	author -;	state -;
+branches;
+next	330.2;
+
+330.2
+date	2003.02.04.20.46.41;	author -;	state -;
+branches;
+next	330.1;
+
+330.1
+date	2003.02.03.18.42.46;	author -;	state -;
+branches;
+next	329.2;
+
+329.2
+date	2002.12.20.20.05.54;	author -;	state -;
+branches;
+next	329.1;
+
+329.1
+date	2002.12.20.20.04.57;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+346.4
+log
+@-
+@
+text
+@(* $Id$ *)
+
+(*
+* Illustrate access to the command line.
+*)
+
+open Printf;;
+
+let printarg i s = printf "argv.(%d) = %s\n" i s;;
+
+printf "basename argv.(0) = %s\n" (Filename.basename Sys.argv.(0));;
+printf "executable_name = %s\n" Sys.executable_name;;
+Array.iteri printarg Sys.argv;;
+
+exit 0;
+
+@
+
+
+346.3
+log
+@-
+@
+text
+@d1 1
+a1 2
+let rcsid = "$Id: argv.ml,v 346.2 2004-08-17 17:43:54-07 - - $"
+    ;;
+d7 1
+a7 1
+let printarg i s = Printf.printf "argv.(%d) = %s\n" i s;;
+d9 4
+a12 3
+Printf.printf "basename argv.(0) = %s\n"
+              (Filename.basename Sys.argv.(0));;
+Printf.printf "executable_name = %s\n" Sys.executable_name;;
+@
+
+
+346.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+let rcsid = "$Id: argv.ml,v 346.1 2004-08-17 17:42:30-07 - - $"
+d10 2
+a11 1
+Printf.printf "basename argv.(0) = %s\n" (Filename.basename Sys.argv.(0))
+@
+
+
+346.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+let rcsid = "$Id: argv.ml,v 330.2 2003-02-04 12:46:41-08 - - $"
+d10 1
+a10 1
+Printf.printf "basename argv.(0) = %s\n" (Filename.basename argv.(0))
+@
+
+
+330.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+let rcsid = "$Id: argv.ml,v 330.1 2003-02-03 10:42:46-08 - - $"
+d10 1
+@
+
+
+330.1
+log
+@-
+@
+text
+@d1 2
+a2 1
+(* $Id: argv.ml,v 329.2 2002-12-20 12:05:54-08 - - $ *)
+d8 1
+a8 3
+open Printf;;
+open Sys;;
+open Array;;
+d10 2
+a11 4
+let printarg i s = printf "argv.(%d) = %s\n" i s;;
+
+printf "executable_name = %s\n" executable_name;;
+Array.iteri printarg argv;;
+@
+
+
+329.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: argv.ml,v 329.1 2002-12-20 12:04:57-08 - - $ *)
+d11 1
+a11 1
+let printarg i = printf "argv.(%d) = %s\n" i argv.(i);
+d14 1
+a14 1
+Array.iter printarg argv;;
+@
+
+
+329.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: argv.sml,v 321.1 2002-02-11 16:51:49-08 - - $ *)
+d14 1
+a14 1
+Array.map printarg argv;;
+@

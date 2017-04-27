@@ -1,0 +1,165 @@
+head	330.4;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+330.4
+date	2003.02.03.18.42.46;	author -;	state -;
+branches;
+next	330.3;
+
+330.3
+date	2003.02.03.18.38.33;	author -;	state -;
+branches;
+next	330.2;
+
+330.2
+date	2003.02.03.18.35.27;	author -;	state -;
+branches;
+next	330.1;
+
+330.1
+date	2003.02.01.06.02.40;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+330.4
+log
+@-
+@
+text
+@(* $Id: exponent.ml,v 330.3 2003-02-03 10:38:33-08 - - $ *)
+
+(*
+* Power function.
+* power n a = a ** n
+* Computed recursively and also tail-recursively.
+* Runs in O(log2 n) time.  O(n) time is not acceptable.
+* Note:  we put the power first so that it can be curried.
+*)
+
+(*
+* Utility fns.
+*)
+let compose f g x = f (g x);;
+let odd n         = n mod 2 <> 0;;
+let even          = compose not odd;;
+let swap fn x y   = fn y x;;
+
+(*
+* powerr - recursive version
+*)
+let rec powerr a n = match n with
+    | 0            -> 1.
+    | n when n < 0 -> powerr (1. /. a) (- n)
+    | n when odd n -> a *. powerr a (n - 1)
+    | n            -> powerr (a *. a) (n / 2)
+    ;;
+
+(*
+* powert - more efficient tail recursive version
+*)
+let powert a n =
+    let rec powert' a n result = match n with
+        | 0            -> result
+        | n when odd n -> powert' a (n - 1) (result *. a)
+        | n            -> powert' (a *. a) (n / 2) result
+    in  if n < 0 then powert' (1. /. a) (- n) 1.
+                 else powert' a n 1.
+    ;;
+
+(*
+* Make use of some of these functions by currying.
+*)
+let square = swap powert 2;;
+let cube   = swap powert 3;;
+let iiito  = powert 3.;;
+let ivto   = powert 4.;;
+
+let e      = 2.718281828459045235360287471352662497757247093;;
+let eto    = powert e;;
+
+@
+
+
+330.3
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: exponent.ml,v 330.2 2003-02-03 10:35:27-08 - - $ *)
+d22 1
+a22 2
+let rec powerr a n =
+    match n with
+d33 1
+a33 2
+    let rec powert' a n result =
+        match n with
+d50 1
+a50 1
+let exp    = powert e;;
+@
+
+
+330.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: exponent.ml,v 330.1 2003-01-31 22:02:40-08 - - $ *)
+d26 1
+a26 1
+    | n when odd n -> a *. powerr (n - 1) a
+d51 3
+@
+
+
+330.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: power.ml,v 330.3 2003-01-02 15:54:07-08 - - $ *)
+d22 1
+a22 1
+let rec powerr n a =
+d25 1
+a25 1
+    | n when n < 0 -> powerr (- n) (1. /. a)
+d27 1
+a27 1
+    | n            -> powerr (n / 2) (a *. a)
+d31 1
+a31 1
+* power - more efficient tail recursive version
+d33 2
+a34 2
+let power n a =
+    let rec power' n a result =
+d37 4
+a40 4
+        | n when odd n -> power' (n - 1) a (result *. a)
+        | n            -> power' (n / 2) (a *. a) result
+    in  if n < 0 then power' (- n) (1. /. a) 1.
+                 else power' n a 1.
+d46 4
+a49 4
+let square = power 2;;
+let cube   = power 3;;
+let iiito  = swap power 3.;;
+let ivto   = swap power 4.;;
+@

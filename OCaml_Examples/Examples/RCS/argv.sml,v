@@ -1,0 +1,46 @@
+head	321.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+321.1
+date	2002.02.12.00.51.49;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+321.1
+log
+@-
+@
+text
+@(* $Id$ *)
+
+(*
+* Illustrate access to the command line.
+*)
+
+fun printlist list =
+    let
+       fun printlist'( _, []) = ()
+         | printlist'( count, car::cdr ) =
+              ( print count; print " => "; print car; print "\n";
+                printlist'( count + 1, cdr )
+              );
+    in
+       printlist'( 0, list );
+    end;
+
+load "Mosml";
+print Mosml.argv();
+
+load "CommandLine";
+print CommandLine.name();
+print CommandLine.arguments();
+@

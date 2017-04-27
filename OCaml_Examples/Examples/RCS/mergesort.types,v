@@ -1,0 +1,32 @@
+head	361.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+361.1
+date	2006.03.03.22.30.04;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+361.1
+log
+@-
+@
+text
+@        Objective Caml version 3.08.0
+
+# val merge : ('a -> 'a -> bool) -> 'a list -> 'a list -> 'a list = <fun>
+val split : 'a list -> 'a list * 'a list = <fun>
+val msort : ('a -> 'a -> bool) -> 'a list -> 'a list = <fun>
+val sort1 : '_a list -> '_a list = <fun>
+val mergesort : ('a -> 'a -> bool) -> 'a list -> 'a list = <fun>
+val sort2 : '_a list -> '_a list = <fun>
+# 
+@

@@ -1,0 +1,62 @@
+head	321.3;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+321.3
+date	2002.02.08.02.11.28;	author -;	state -;
+branches;
+next	321.2;
+
+321.2
+date	2002.02.08.02.10.33;	author -;	state -;
+branches;
+next	321.1;
+
+321.1
+date	2002.02.08.02.10.16;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+321.3
+log
+@-
+@
+text
+@print "$Id: hello-world.sml,v 321.2 2002-02-07 18:10:33-08 - - $\n";
+print "Hello, World!\n";
+quit();
+@
+
+
+321.2
+log
+@-
+@
+text
+@d1 1
+a1 2
+(* $Id: hello-world.sml,v 321.1 2002-02-07 18:10:16-08 - - $ *)
+
+@
+
+
+321.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id$ *)
+d3 1
+a3 1
+print "Hello, World!\n"
+@

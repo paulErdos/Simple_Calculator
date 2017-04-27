@@ -1,0 +1,1156 @@
+head	361.1;
+access;
+symbols;
+locks;
+comment	@% @;
+
+
+361.1
+date	2006.03.03.02.48.23;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+361.1
+log
+@-
+@
+text
+@%!PS-Adobe-3.0
+%%BoundingBox: 24 24 588 768
+%%Title: Enscript Output
+%%For: Wesley F Mackey,,,,
+%%Creator: GNU enscript 1.6.1
+%%CreationDate: Tue May 17 19:31:30 2005
+%%Orientation: Portrait
+%%Pages: (atend)
+%%DocumentMedia: Letter 612 792 0 () ()
+%%DocumentNeededResources: (atend)
+%%EndComments
+%%BeginProlog
+%%BeginResource: procset Enscript-Prolog 1.6 1
+%
+% Procedures.
+%
+
+/_S {	% save current state
+  /_s save def
+} def
+/_R {	% restore from saved state
+  _s restore
+} def
+
+/S {	% showpage protecting gstate
+  gsave
+  showpage
+  grestore
+} bind def
+
+/MF {	% fontname newfontname -> -	make a new encoded font
+  /newfontname exch def
+  /fontname exch def
+
+  /fontdict fontname findfont def
+  /newfont fontdict maxlength dict def
+
+  fontdict {
+    exch
+    dup /FID eq {
+      % skip FID pair
+      pop pop
+    } {
+      % copy to the new font dictionary
+      exch newfont 3 1 roll put
+    } ifelse
+  } forall
+
+  newfont /FontName newfontname put
+
+  % insert only valid encoding vectors
+  encoding_vector length 256 eq {
+    newfont /Encoding encoding_vector put
+  } if
+
+  newfontname newfont definefont pop
+} def
+
+/SF { % fontname width height -> -	set a new font
+  /height exch def
+  /width exch def
+
+  findfont
+  [width 0 0 height 0 0] makefont setfont
+} def
+
+/SUF { % fontname width height -> -	set a new user font
+  /height exch def
+  /width exch def
+
+  /F-gs-user-font MF
+  /F-gs-user-font width height SF
+} def
+
+/M {moveto} bind def
+/s {show} bind def
+
+/Box {	% x y w h -> -			define box path
+  /d_h exch def /d_w exch def /d_y exch def /d_x exch def
+  d_x d_y  moveto
+  d_w 0 rlineto
+  0 d_h rlineto
+  d_w neg 0 rlineto
+  closepath
+} def
+
+/bgs {	% x y height blskip gray str -> -	show string with bg color
+  /str exch def
+  /gray exch def
+  /blskip exch def
+  /height exch def
+  /y exch def
+  /x exch def
+
+  gsave
+    x y blskip sub str stringwidth pop height Box
+    gray setgray
+    fill
+  grestore
+  x y M str s
+} def
+
+% Highlight bars.
+/highlight_bars {	% nlines lineheight output_y_margin gray -> -
+  gsave
+    setgray
+    /ymarg exch def
+    /lineheight exch def
+    /nlines exch def
+
+    % This 2 is just a magic number to sync highlight lines to text.
+    0 d_header_y ymarg sub 2 sub translate
+
+    /cw d_output_w cols div def
+    /nrows d_output_h ymarg 2 mul sub lineheight div cvi def
+
+    % for each column
+    0 1 cols 1 sub {
+      cw mul /xp exch def
+
+      % for each rows
+      0 1 nrows 1 sub {
+        /rn exch def
+        rn lineheight mul neg /yp exch def
+        rn nlines idiv 2 mod 0 eq {
+	  % Draw highlight bar.  4 is just a magic indentation.
+	  xp 4 add yp cw 8 sub lineheight neg Box fill
+	} if
+      } for
+    } for
+
+  grestore
+} def
+
+% Line highlight bar.
+/line_highlight {	% x y width height gray -> -
+  gsave
+    /gray exch def
+    Box gray setgray fill
+  grestore
+} def
+
+% Column separator lines.
+/column_lines {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h translate
+    /cw d_output_w cols div def
+    1 1 cols 1 sub {
+      cw mul 0 moveto
+      0 d_output_h rlineto stroke
+    } for
+  grestore
+} def
+
+% Column borders.
+/column_borders {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h moveto
+    0 d_output_h rlineto
+    d_output_w 0 rlineto
+    0 d_output_h neg rlineto
+    closepath stroke
+  grestore
+} def
+
+% Do the actual underlay drawing
+/draw_underlay {
+  ul_style 0 eq {
+    ul_str true charpath stroke
+  } {
+    ul_str show
+  } ifelse
+} def
+
+% Underlay
+/underlay {	% - -> -
+  gsave
+    0 d_page_h translate
+    d_page_h neg d_page_w atan rotate
+
+    ul_gray setgray
+    ul_font setfont
+    /dw d_page_h dup mul d_page_w dup mul add sqrt def
+    ul_str stringwidth pop dw exch sub 2 div ul_h_ptsize -2 div moveto
+    draw_underlay
+  grestore
+} def
+
+/user_underlay {	% - -> -
+  gsave
+    ul_x ul_y translate
+    ul_angle rotate
+    ul_gray setgray
+    ul_font setfont
+    0 0 ul_h_ptsize 2 div sub moveto
+    draw_underlay
+  grestore
+} def
+
+% Page prefeed
+/page_prefeed {		% bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} def
+
+% Wrapped line markers
+/wrapped_line_mark {	% x y charwith charheight type -> -
+  /type exch def
+  /h exch def
+  /w exch def
+  /y exch def
+  /x exch def
+
+  type 2 eq {
+    % Black boxes (like TeX does)
+    gsave
+      0 setlinewidth
+      x w 4 div add y M
+      0 h rlineto w 2 div 0 rlineto 0 h neg rlineto
+      closepath fill
+    grestore
+  } {
+    type 3 eq {
+      % Small arrows
+      gsave
+        .2 setlinewidth
+        x w 2 div add y h 2 div add M
+        w 4 div 0 rlineto
+        x w 4 div add y lineto stroke
+
+        x w 4 div add w 8 div add y h 4 div add M
+        x w 4 div add y lineto
+	w 4 div h 8 div rlineto stroke
+      grestore
+    } {
+      % do nothing
+    } ifelse
+  } ifelse
+} def
+
+% EPSF import.
+
+/BeginEPSF {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack
+  userdict begin
+  /showpage { } def
+  0 setgray 0 setlinecap
+  1 setlinewidth 0 setlinejoin
+  10 setmiterlimit [ ] 0 setdash newpath
+  /languagelevel where {
+    pop languagelevel
+    1 ne {
+      false setstrokeadjust false setoverprint
+    } if
+  } if
+} bind def
+
+/EndEPSF {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+%%EndResource
+%%BeginResource: procset Enscript-Encoding-88591 1.6 1
+/encoding_vector [
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclam       	/quotedbl     	/numbersign   	
+/dollar       	/percent      	/ampersand    	/quoteright   	
+/parenleft    	/parenright   	/asterisk     	/plus         	
+/comma        	/hyphen       	/period       	/slash        	
+/zero         	/one          	/two          	/three        	
+/four         	/five         	/six          	/seven        	
+/eight        	/nine         	/colon        	/semicolon    	
+/less         	/equal        	/greater      	/question     	
+/at           	/A            	/B            	/C            	
+/D            	/E            	/F            	/G            	
+/H            	/I            	/J            	/K            	
+/L            	/M            	/N            	/O            	
+/P            	/Q            	/R            	/S            	
+/T            	/U            	/V            	/W            	
+/X            	/Y            	/Z            	/bracketleft  	
+/backslash    	/bracketright 	/asciicircum  	/underscore   	
+/quoteleft    	/a            	/b            	/c            	
+/d            	/e            	/f            	/g            	
+/h            	/i            	/j            	/k            	
+/l            	/m            	/n            	/o            	
+/p            	/q            	/r            	/s            	
+/t            	/u            	/v            	/w            	
+/x            	/y            	/z            	/braceleft    	
+/bar          	/braceright   	/tilde        	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclamdown   	/cent         	/sterling     	
+/currency     	/yen          	/brokenbar    	/section      	
+/dieresis     	/copyright    	/ordfeminine  	/guillemotleft	
+/logicalnot   	/hyphen       	/registered   	/macron       	
+/degree       	/plusminus    	/twosuperior  	/threesuperior	
+/acute        	/mu           	/paragraph    	/bullet       	
+/cedilla      	/onesuperior  	/ordmasculine 	/guillemotright	
+/onequarter   	/onehalf      	/threequarters	/questiondown 	
+/Agrave       	/Aacute       	/Acircumflex  	/Atilde       	
+/Adieresis    	/Aring        	/AE           	/Ccedilla     	
+/Egrave       	/Eacute       	/Ecircumflex  	/Edieresis    	
+/Igrave       	/Iacute       	/Icircumflex  	/Idieresis    	
+/Eth          	/Ntilde       	/Ograve       	/Oacute       	
+/Ocircumflex  	/Otilde       	/Odieresis    	/multiply     	
+/Oslash       	/Ugrave       	/Uacute       	/Ucircumflex  	
+/Udieresis    	/Yacute       	/Thorn        	/germandbls   	
+/agrave       	/aacute       	/acircumflex  	/atilde       	
+/adieresis    	/aring        	/ae           	/ccedilla     	
+/egrave       	/eacute       	/ecircumflex  	/edieresis    	
+/igrave       	/iacute       	/icircumflex  	/idieresis    	
+/eth          	/ntilde       	/ograve       	/oacute       	
+/ocircumflex  	/otilde       	/odieresis    	/divide       	
+/oslash       	/ugrave       	/uacute       	/ucircumflex  	
+/udieresis    	/yacute       	/thorn        	/ydieresis    	
+] def
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Courier
+/HFpt_w 10 def
+/HFpt_h 10 def
+/Courier-Bold /HF-gs-font MF
+/HF /HF-gs-font findfont [HFpt_w 0 0 HFpt_h 0 0] makefont def
+/Courier /F-gs-font MF
+/F-gs-font 10 10 SF
+/#copies 1 def
+% Pagedevice definitions:
+gs_languagelevel 1 gt {
+  <<
+    /PageSize [612 792] 
+  >> setpagedevice
+} if
+%%BeginResource: procset Enscript-Header-enscript 1.6 1
+%%IncludeResource: font Times-Bold
+%%IncludeResource: font Times-Roman
+
+% Fonts.
+/Times-Bold /HeaderFont-Bold MF
+/HeaderDateF /HeaderFont-Bold findfont 12 scalefont def
+
+/Times-Roman /HeaderFont-Times MF
+/HeaderHDRF /HeaderFont-Times findfont 14 scalefont def
+
+/HeaderPageNumF /Helvetica-Bold findfont 28.8 scalefont def
+
+/do_header {	% print enscript header
+  gsave
+    d_header_x d_header_y translate
+
+    % light bar
+    0 0 d_header_w d_header_h 2 div Box
+    .95 setgray fill
+
+    % dark gray boxes
+    /dbw d_header_h 2 mul def	% dark box width
+    /dbc .7 def			% dark box color
+
+    % left dark box.
+    0 0 dbw d_header_h Box
+    dbc setgray fill
+
+    0 setgray 
+    HeaderDateF setfont
+    moddatestr dup stringwidth pop dbw exch sub 2 div 
+    d_header_h 2 div 2 add moveto show
+    modtimestr dup stringwidth pop dbw exch sub 2 div 
+    d_header_h 5 div moveto show
+
+    % right dark box
+    d_header_w dbw sub 0 dbw d_header_h Box
+    dbc setgray fill
+
+    HeaderPageNumF setfont
+    1 setgray
+    pagenumstr dup
+    stringwidth pop dbw exch sub 2 div d_header_w dbw sub add
+    d_header_h .2 mul moveto show
+
+    % filename
+    0 setgray 
+    HeaderHDRF setfont
+    d_header_w fname stringwidth pop sub 2 div d_header_h 8 div moveto
+    fname show
+
+    % user supplied header string.
+    user_header_p {
+      /h d_header_h 8 div 5 mul def
+
+      % Implement strict enscript compatibility.
+      user_header_center_str () eq user_header_right_str () eq and {
+        d_header_w user_header_left_str stringwidth pop sub 2 div 
+        h moveto user_header_left_str show
+      } {
+        dbw 5 add h moveto user_header_left_str show
+
+        d_header_w user_header_center_str stringwidth pop sub 2 div 
+        h moveto user_header_center_str show
+
+	d_header_w dbw sub 5 sub user_header_right_str stringwidth pop
+	sub h moveto user_header_right_str show
+      } ifelse
+    } if
+
+  grestore
+} def
+%%EndResource
+/d_page_w 564 def
+/d_page_h 744 def
+/d_header_x 0 def
+/d_header_y 708 def
+/d_header_w 564 def
+/d_header_h 36 def
+/d_footer_x 0 def
+/d_footer_y 0 def
+/d_footer_w 564 def
+/d_footer_h 0 def
+/d_output_w 564 def
+/d_output_h 708 def
+/cols 1 def
+%%EndSetup
+%%Page: (1) 1
+%%BeginPageSetup
+_S
+24 24 translate
+/pagenum 1 def
+/fname (lazylist.scm) def
+/fdir () def
+/ftail (lazylist.scm) def
+% User defined strings:
+/pagenumstr (1) def
+/moddatestr (05/17/05) def
+/modtimestr (19:31:10) def
+/user_header_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 695 M
+(#!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/mzscheme/bin/mzscheme -qC) s
+5 684 M
+(;; $Id: Lazylisting.ps,v 353.1 2005-05-17 19:32:12-07 - - $) s
+5 662 M
+(;;) s
+5 651 M
+(;; This program shows factorial, the ``hello world'' of functional) s
+5 640 M
+(;; programming.  It also shows lazy evaluation.  Note that the) s
+5 629 M
+(;; ``positiveintegers'' described below contain a lazy list of all) s
+5 618 M
+(;; positive integers in the range $2^29-1$.  Bigloo Scheme uses) s
+5 607 M
+(;; 30-bit signed integers.) s
+5 596 M
+(;;) s
+5 574 M
+(\(define \(void arg\) '\(\)\)) s
+5 552 M
+(\(define BIGNUM 100000000000000000000000000000000000000000000000000\)) s
+5 530 M
+(\(define \(fac n\)) s
+5 519 M
+(    \(letrec) s
+5 508 M
+(        \(\(fac2 \(lambda \(n m\)) s
+5 497 M
+(                \(if \(<= n 1\) m \(fac2 \(- n 1\) \(* n m\)\)\)\)\)\)) s
+5 486 M
+(        \(fac2 n 1\)) s
+5 475 M
+(\)\)) s
+5 453 M
+(\(define \(printfac n\)) s
+5 442 M
+(    \(printf "~s! = ~s~n" n \(fac n\)\)) s
+5 431 M
+(\)) s
+5 409 M
+(\(define \(.. first last\)) s
+5 398 M
+(    \(if \(> first last\) '\(\)) s
+5 387 M
+(        \(delay \(cons first \(.. \(+ first 1\) last\)\)\)) s
+5 376 M
+(\)\)) s
+5 354 M
+(\(define positiveintegers \(.. 1 BIGNUM\)\)) s
+5 332 M
+(\(define \(take n lazylist\)) s
+5 321 M
+(    \(if \(<= n 0\) '\(\)) s
+5 310 M
+(        \(let \(\(forcedlist \(force lazylist\)\)\)) s
+5 299 M
+(             \(cons \(car forcedlist\)) s
+5 288 M
+(                   \(take \(- n 1\) \(cdr forcedlist\)\)\)) s
+5 277 M
+(\)\)\)) s
+5 255 M
+(\(define \(lazytake n lazylist\)) s
+5 244 M
+(    \(if \(<= n 0\) '\(\)) s
+5 233 M
+(        \(let \(\(forcedlist \(force lazylist\)\)\)) s
+5 222 M
+(             \(delay \(cons \(car forcedlist\)) s
+5 211 M
+(                          \(lazytake \(- n 1\) \(cdr forcedlist\)\)\)\)) s
+5 200 M
+(\)\)\)) s
+5 178 M
+(\(define \(lazymap fn lazylist\)) s
+5 167 M
+(    \(if \(null? lazylist\) '\(\)) s
+5 156 M
+(        \(let \(\(forcedlist \(force lazylist\)\)\)) s
+5 145 M
+(             \(cons \(fn \(car forcedlist\)\)) s
+5 134 M
+(                   \(lazymap fn \(cdr forcedlist\)\)\)) s
+5 123 M
+(\)\)\)) s
+5 101 M
+(\(define \(main argvl\)) s
+5 90 M
+(    \(printf "BIGNUM = ~s~n" BIGNUM\)) s
+5 79 M
+(    \(lazymap printfac \(lazytake 50 positiveintegers\)\)) s
+5 68 M
+(    #f) s
+5 57 M
+(\)) s
+_R
+S
+%%Page: (1) 2
+%%BeginPageSetup
+_S
+24 24 translate
+/pagenum 1 def
+/fname (lazystream.ml) def
+/fdir () def
+/ftail (lazystream.ml) def
+% User defined strings:
+/pagenumstr (1) def
+/moddatestr (05/17/05) def
+/modtimestr (19:31:10) def
+/user_header_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 695 M
+(\(* $Id: Lazylisting.ps,v 353.1 2005-05-17 19:32:12-07 - - $ *\)) s
+5 673 M
+(let \(!!!\) = Lazy.force) s
+5 651 M
+(let prtf = Printf.printf) s
+5 629 M
+(\(* stream and lazy stuff *\)) s
+5 607 M
+(type 'a stream = End | Stream of 'a * 'a stream Lazy.t) s
+5 585 M
+(let \(@@::\) car cdr = Stream \(car, cdr\)) s
+5 563 M
+(let head stream = match stream with) s
+5 552 M
+(    | End -> invalid_arg "head") s
+5 541 M
+(    | Stream \(car, _\) -> car) s
+5 519 M
+(let tail stream = match stream with) s
+5 508 M
+(    | End -> invalid_arg "tail") s
+5 497 M
+(    | Stream \(_, cdr\) -> !!!cdr) s
+5 475 M
+(let rec take n stream = match n, stream with) s
+5 464 M
+(    | 0, _ when n <= 0 -> End) s
+5 453 M
+(    | _, End -> End) s
+5 442 M
+(    | _, Stream \(car, cdr\) -> Stream \(car, lazy \(take \(n - 1\) !!!cdr\)\)) s
+5 420 M
+(let rec list_of_stream stream = match stream with) s
+5 409 M
+(    | End -> []) s
+5 398 M
+(    | Stream \(car, cdr\) -> car :: list_of_stream !!!cdr) s
+5 376 M
+(let rec iter fn stream = match stream with) s
+5 365 M
+(    | End -> \(\)) s
+5 354 M
+(    | Stream \(car, cdr\) -> \(fn car; iter fn !!!cdr\)) s
+5 332 M
+(let rec iter2 fn stream1 stream2 = match stream1, stream2 with) s
+5 321 M
+(    | End, _ -> \(\)) s
+5 310 M
+(    | _, End -> \(\)) s
+5 299 M
+(    | Stream \(car1, cdr1\), Stream \(car2, cdr2\)) s
+5 288 M
+(             -> \(fn car1 car2; iter2 fn !!!cdr1 !!!cdr2\)) s
+5 266 M
+(let rec map2 fn stream1 stream2 = match stream1, stream2 with) s
+5 255 M
+(    | End, _ -> End) s
+5 244 M
+(    | _, End -> End) s
+5 233 M
+(    | Stream \(car1, cdr1\), Stream \(car2, cdr2\)) s
+5 222 M
+(             -> Stream \(fn car1 car2, lazy \(map2 fn !!!cdr1 !!!cdr2\)\)) s
+5 200 M
+(\(* stuff that uses streams and Nums *\)) s
+5 178 M
+(let rec range head limit =) s
+5 167 M
+(    if head > limit) s
+5 156 M
+(    then End) s
+5 145 M
+(    else let next = head + 1) s
+5 134 M
+(         in  Stream \(head, lazy \(range next limit\)\)) s
+5 112 M
+(let naturals = range 0 max_int) s
+5 90 M
+(let fac n =) s
+5 79 M
+(    let rec fac' n m = match n with) s
+5 68 M
+(        | 0 -> m) s
+5 57 M
+(        | n -> fac' \(n - 1\) \(n * m\)) s
+5 46 M
+(    in  if n < 0 then invalid_arg "fac") s
+5 35 M
+(                 else fac' n 1) s
+5 13 M
+(let printfac n = prtf "%d! = %d\\n" n \(fac n\)) s
+_R
+S
+%%Page: (2) 3
+%%BeginPageSetup
+_S
+24 24 translate
+/pagenum 2 def
+/fname (lazystream.ml) def
+/fdir () def
+/ftail (lazystream.ml) def
+% User defined strings:
+/pagenumstr (2) def
+/moddatestr (05/17/05) def
+/modtimestr (19:31:10) def
+/user_header_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 695 M
+(let printfacs n = iter printfac \(take n naturals\)) s
+5 673 M
+(\(* let fib = 0 : 1 : map2 \(+\) fib \(tail fib\) *\)) s
+5 651 M
+(let fibstream =) s
+5 640 M
+(    let rec stream0 = Stream \(0, stream1\)) s
+5 629 M
+(        and stream1 = lazy \(Stream \(1, stream2\)\)) s
+5 618 M
+(        and stream2 = lazy \(map2 \(+\) stream0 !!!stream1\)) s
+5 607 M
+(    in  stream0) s
+5 585 M
+(let printfib n nfib = prtf "fib\(%d\) = %d\\n" n nfib) s
+5 563 M
+(let printfibs n = iter2 printfib naturals \(take n fibstream\)) s
+_R
+S
+%%Page: (1) 4
+%%BeginPageSetup
+_S
+24 24 translate
+/pagenum 1 def
+/fname (lazythunk-p4.ml) def
+/fdir () def
+/ftail (lazythunk-p4.ml) def
+% User defined strings:
+/pagenumstr (1) def
+/moddatestr (05/17/05) def
+/modtimestr (19:31:10) def
+/user_header_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 695 M
+(\(* $Id: Lazylisting.ps,v 353.1 2005-05-17 19:32:12-07 - - $ *\)) s
+5 673 M
+(open Printf) s
+5 651 M
+(\(* re-implementation of module Lazy *\)) s
+5 629 M
+(#load "camlp4o.cma";;) s
+5 618 M
+(let lazyexpand _ expr = "\(ref \(Delay \(fun \(\) -> \(" ^ expr ^ "\)\)\)\)";;) s
+5 607 M
+(Quotation.add "lazy" \(Quotation.ExStr lazyexpand\);;) s
+5 585 M
+(type 'a suspension =) s
+5 574 M
+(    | Value of 'a) s
+5 563 M
+(    | Excep of exn) s
+5 552 M
+(    | Delay of \(unit -> 'a\)) s
+5 530 M
+(type 'a thunk = 'a suspension ref) s
+5 508 M
+(exception Thunk_cycle) s
+5 486 M
+(let rec force thunk = match !thunk with) s
+5 475 M
+(    | Delay delay -> \(thunk := Excep Thunk_cycle;) s
+5 464 M
+(                      try  let value = delay \(\)) s
+5 453 M
+(                           in  \(thunk := Value value; value\)) s
+5 442 M
+(                      with excep -> \(thunk := Excep excep; raise excep\)\)) s
+5 431 M
+(    | Value value -> value) s
+5 420 M
+(    | Excep excep -> raise excep) s
+5 398 M
+(let \(!?\) = force) s
+5 376 M
+(\(* stream and lazy stuff *\)) s
+5 354 M
+(type 'a stream = End | Stream of 'a * 'a stream thunk) s
+5 332 M
+(exception End_stream) s
+5 310 M
+(let \(@@::\) hd tl = Stream \(hd, tl\)) s
+5 288 M
+(let head = function) s
+5 277 M
+(    | End            -> raise End_stream) s
+5 266 M
+(    | Stream \(hd, _\) -> hd) s
+5 244 M
+(let tail = function) s
+5 233 M
+(    | End            -> raise End_stream) s
+5 222 M
+(    | Stream \(_, tl\) -> !?tl) s
+5 200 M
+(let rec take n stream = match n, stream with) s
+5 189 M
+(    | _, End             -> End) s
+5 178 M
+(    | n, _ when n <= 0   -> End) s
+5 167 M
+(    | _, Stream \(hd, tl\) -> Stream \(hd, <:lazy< \(take \(n - 1\) !?tl\)>>\)) s
+5 145 M
+(let rec drop n stream = match n, stream with) s
+5 134 M
+(    | _, End             -> End) s
+5 123 M
+(    | n, _ when n <= 0   -> stream) s
+5 112 M
+(    | _, Stream \(hd, tl\) -> drop \(n - 1\) !?tl) s
+5 90 M
+(let rec list_of_stream = function) s
+5 79 M
+(    | End             -> []) s
+5 68 M
+(    | Stream \(hd, tl\) -> hd :: list_of_stream !?tl) s
+5 46 M
+(let rec iter fn1 = function) s
+5 35 M
+(    | End             -> \(\)) s
+5 24 M
+(    | Stream \(hd, tl\) -> \(fn1 hd; iter fn1 !?tl\)) s
+5 2 M
+(let rec iter2 fn2 = function) s
+_R
+S
+%%Page: (2) 5
+%%BeginPageSetup
+_S
+24 24 translate
+/pagenum 2 def
+/fname (lazythunk-p4.ml) def
+/fdir () def
+/ftail (lazythunk-p4.ml) def
+% User defined strings:
+/pagenumstr (2) def
+/moddatestr (05/17/05) def
+/modtimestr (19:31:10) def
+/user_header_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 695 M
+(    | End, _ -> \(\)) s
+5 684 M
+(    | _, End -> \(\)) s
+5 673 M
+(    | Stream \(hd1, tl1\), Stream \(hd2, tl2\)) s
+5 662 M
+(             -> \(fn2 hd1 hd2; iter2 fn2 !?tl1 !?tl2\)) s
+5 640 M
+(let rec iter3 fn3 = function) s
+5 629 M
+(    | End, _, _ -> \(\)) s
+5 618 M
+(    | _, End, _ -> \(\)) s
+5 607 M
+(    | _, _, End -> \(\)) s
+5 596 M
+(    | Stream \(hd1, tl1\), Stream \(hd2, tl2\), Stream \(hd3, tl3\)) s
+5 585 M
+(                -> \(fn3 hd1 hd2 hd3; iter3 fn3 !?tl1 !?tl2 !?tl3\)) s
+5 563 M
+(let rec zip fn = function) s
+5 552 M
+(    | End, _ -> End) s
+5 541 M
+(    | _, End -> End) s
+5 530 M
+(    | Stream \(hd1, tl1\), Stream \(hd2, tl2\)) s
+5 519 M
+(             -> Stream \(fn hd1 hd2, <:lazy< \(zip fn !?tl1 !?tl2\)>>\)) s
+5 497 M
+(\(* stuff that uses streams and Nums *\)) s
+5 475 M
+(let rec range head limit =) s
+5 464 M
+(    if head > limit) s
+5 453 M
+(    then End) s
+5 442 M
+(    else let next = head + 1) s
+5 431 M
+(         in  Stream \(head, <:lazy< \(range next limit\)>>\)) s
+5 409 M
+(let naturals = range 0 max_int) s
+5 387 M
+(let fac n =) s
+5 376 M
+(    let rec fac' n m = match n with) s
+5 365 M
+(        | 0 -> m) s
+5 354 M
+(        | n -> fac' \(n - 1\) \(n * m\)) s
+5 343 M
+(    in  if n < 0 then invalid_arg "fac") s
+5 332 M
+(                 else fac' n 1) s
+5 310 M
+(let printfac n = printf "%d! = %d\\n" n \(fac n\)) s
+5 288 M
+(let printfacs n = iter printfac \(take n naturals\)) s
+5 266 M
+(\(* let fib = 0 : 1 : zip \(+\) fib \(tail fib\) *\)) s
+5 244 M
+(let fibstream =) s
+5 233 M
+(    let rec fibstream0 = Stream \(0, fibstream1\)) s
+5 222 M
+(        and fibstream1 = <:lazy< \(Stream \(1, fibstream2\)\)>>) s
+5 211 M
+(        and fibstream2 = <:lazy< \(zip \(+\) fibstream0 !?fibstream1\)>>) s
+5 200 M
+(    in  fibstream0) s
+5 178 M
+(let printfib n nfib nfib' =) s
+5 167 M
+(    printf "fib\(%3d\) = %11d, %20.15f\\n") s
+5 156 M
+(           n nfib \(float_of_int nfib /. float_of_int nfib'\)) s
+5 134 M
+(let printfibs n = iter3 printfib naturals) s
+5 123 M
+(                                 \(take n fibstream\)) s
+5 112 M
+(                                 \(take n \(drop 1 fibstream\)\)) s
+_R
+S
+%%Page: (1) 6
+%%BeginPageSetup
+_S
+24 24 translate
+/pagenum 1 def
+/fname (lazythunk.ml) def
+/fdir () def
+/ftail (lazythunk.ml) def
+% User defined strings:
+/pagenumstr (1) def
+/moddatestr (05/17/05) def
+/modtimestr (19:31:11) def
+/user_header_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 695 M
+(\(* $Id: Lazylisting.ps,v 353.1 2005-05-17 19:32:12-07 - - $ *\)) s
+5 673 M
+(open Printf) s
+5 651 M
+(\(* re-implementation of module Lazy *\)) s
+5 629 M
+(type 'a suspension =) s
+5 618 M
+(    | Value of 'a) s
+5 607 M
+(    | Excep of exn) s
+5 596 M
+(    | Delay of \(unit -> 'a\)) s
+5 574 M
+(type 'a thunk = 'a suspension ref) s
+5 552 M
+(let force thunk = match !thunk with) s
+5 541 M
+(    | Value value -> value) s
+5 530 M
+(    | Excep excep -> raise excep) s
+5 519 M
+(    | Delay delay -> \(try  let value = delay \(\)) s
+5 508 M
+(                           in  \(thunk := Value value; value\)) s
+5 497 M
+(                      with excep -> \(thunk := Excep excep;) s
+5 486 M
+(                                     raise excep\)\)) s
+5 464 M
+(let \(!!\) = force) s
+5 442 M
+(\(* stream and lazy stuff *\)) s
+5 420 M
+(type 'a stream = End | Stream of 'a * 'a stream thunk) s
+5 398 M
+(exception End_stream) s
+5 376 M
+(let \(@@::\) car cdr = Stream \(car, cdr\)) s
+5 354 M
+(let head stream = match stream with) s
+5 343 M
+(    | End -> raise End_stream) s
+5 332 M
+(    | Stream \(car, _\) -> car) s
+5 310 M
+(let tail stream = match stream with) s
+5 299 M
+(    | End -> raise End_stream) s
+5 288 M
+(    | Stream \(_, cdr\) -> !!cdr) s
+5 266 M
+(let rec take n stream = match n, stream with) s
+5 255 M
+(    | _, End -> End) s
+5 244 M
+(    | n, _ when n <= 0 -> End) s
+5 233 M
+(    | _, Stream \(car, cdr\) ->) s
+5 222 M
+(          Stream \(car, ref \(Delay \(fun \(\) -> take \(n - 1\) !!cdr\)\)\)) s
+5 200 M
+(let rec list_of_stream stream = match stream with) s
+5 189 M
+(    | End -> []) s
+5 178 M
+(    | Stream \(car, cdr\) -> car :: list_of_stream !!cdr) s
+5 156 M
+(let rec drop n stream = match n, stream with) s
+5 145 M
+(    | _, End -> End) s
+5 134 M
+(    | n, _ when n <= 0 -> stream) s
+5 123 M
+(    | _, Stream \(car, cdr\) -> drop \(n - 1\) !!cdr) s
+5 101 M
+(let rec iter fn stream = match stream with) s
+5 90 M
+(    | End -> \(\)) s
+5 79 M
+(    | Stream \(car, cdr\) -> \(fn car; iter fn !!cdr\)) s
+5 57 M
+(let rec iter2 fn stream1 stream2 = match stream1, stream2 with) s
+5 46 M
+(    | End, _ -> \(\)) s
+5 35 M
+(    | _, End -> \(\)) s
+5 24 M
+(    | Stream \(car1, cdr1\), Stream \(car2, cdr2\)) s
+5 13 M
+(          -> \(fn car1 car2; iter2 fn !!cdr1 !!cdr2\)) s
+_R
+S
+%%Page: (2) 7
+%%BeginPageSetup
+_S
+24 24 translate
+/pagenum 2 def
+/fname (lazythunk.ml) def
+/fdir () def
+/ftail (lazythunk.ml) def
+% User defined strings:
+/pagenumstr (2) def
+/moddatestr (05/17/05) def
+/modtimestr (19:31:11) def
+/user_header_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 695 M
+(let rec iter3 fn stream1 stream2 stream3 =) s
+5 684 M
+(    match stream1, stream2, stream3 with) s
+5 673 M
+(    | End, _, _ -> \(\)) s
+5 662 M
+(    | _, End, _ -> \(\)) s
+5 651 M
+(    | _, _, End -> \(\)) s
+5 640 M
+(    | Stream \(car1, cdr1\), Stream \(car2, cdr2\), Stream \(car3, cdr3\)) s
+5 629 M
+(          -> \(fn car1 car2 car3; iter3 fn !!cdr1 !!cdr2 !!cdr3\)) s
+5 607 M
+(let rec map2 fn stream1 stream2 = match stream1, stream2 with) s
+5 596 M
+(    | End, _ -> End) s
+5 585 M
+(    | _, End -> End) s
+5 574 M
+(    | Stream \(car1, cdr1\), Stream \(car2, cdr2\)) s
+5 563 M
+(          -> Stream \(fn car1 car2,) s
+5 552 M
+(                     ref \(Delay \(fun \(\) -> map2 fn !!cdr1 !!cdr2\)\)\)) s
+5 530 M
+(\(* stuff that uses streams and Nums *\)) s
+5 508 M
+(let rec range head limit =) s
+5 497 M
+(    if head > limit) s
+5 486 M
+(    then End) s
+5 475 M
+(    else let next = head + 1) s
+5 464 M
+(         in  Stream \(head, ref \(Delay \(fun \(\) -> range next limit\)\)\)) s
+5 442 M
+(let naturals = range 0 max_int) s
+5 420 M
+(let fac n =) s
+5 409 M
+(    let rec fac' n m = match n with) s
+5 398 M
+(        | 0 -> m) s
+5 387 M
+(        | n -> fac' \(n - 1\) \(n * m\)) s
+5 376 M
+(    in  if n < 0 then invalid_arg "fac") s
+5 365 M
+(                 else fac' n 1) s
+5 343 M
+(let printfac n = printf "%2d! = %10d\\n" n \(fac n\)) s
+5 321 M
+(let printfacs n = iter printfac \(take n naturals\)) s
+5 299 M
+(\(* lazy let fib = 0 : 1 : map2 \(+\) fib \(tail fib\) *\)) s
+5 277 M
+(let fibstream =) s
+5 266 M
+(    let rec stream0 = Stream \(0, stream1\)) s
+5 255 M
+(        and stream1 = ref \(Delay \(fun \(\) -> Stream \(1, stream2\)\)\)) s
+5 244 M
+(        and stream2 = ref \(Delay \(fun \(\) -> map2 \(+\) stream0 !!stream1\)\)) s
+5 233 M
+(    in  stream0) s
+5 211 M
+(let printfib n nfib nfib' =) s
+5 200 M
+(    printf "fib\(%3d\) = %11d, %20.15f\\n") s
+5 189 M
+(           n nfib \(float_of_int nfib /. float_of_int nfib'\)) s
+5 167 M
+(let printfibs n = iter3 printfib naturals) s
+5 156 M
+(                                 \(take n fibstream\)) s
+5 145 M
+(                                 \(take n \(drop 1 fibstream\)\)) s
+_R
+S
+%%Trailer
+%%Pages: 7
+%%DocumentNeededResources: font Times-Roman Courier-Bold Courier 
+%%+ font Times-Bold 
+%%EOF
+@

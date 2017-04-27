@@ -1,0 +1,41 @@
+head	330.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+330.1
+date	2003.02.04.21.13.42;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+330.1
+log
+@-
+@
+text
+@# $Id$
+
+SRCS    = ${wildcard *.ml}
+BINS    = ${patsubst %.ml, %, ${SRCS}}
+LISS    = ${SRCS} GNUmakefile
+LISTING = Listing.ps
+
+all: ${BINS}
+
+%: %.ml
+	cid $<
+	ocamlopt.opt $< -o $@@
+
+lis: ${SRCS}
+	enscript -G -p ${LISTING} ${LISS}
+	gh ${LISTING} &
+	ps2pdf ${LISTING}
+
+@

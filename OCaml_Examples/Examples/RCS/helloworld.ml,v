@@ -1,0 +1,69 @@
+head	329.3;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+329.3
+date	2014.11.17.21.49.14;	author -;	state -;
+branches;
+next	329.2;
+
+329.2
+date	2014.11.17.21.48.56;	author -;	state -;
+branches;
+next	329.1;
+
+329.1
+date	2002.12.20.19.54.36;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+329.3
+log
+@-
+@
+text
+@(* $Id: helloworld.ml,v 329.2 2014-11-17 13:48:56-08 - - $ *)
+
+Printf.printf "Hello, World!\n";;
+exit 0;;
+
+@
+
+
+329.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id$ *)
+d3 2
+a4 4
+open Printf;;
+
+printf "%s\n" rcsid;;
+printf "Hello, World!\n";;
+a5 1
+exit 0;;
+@
+
+
+329.1
+log
+@-
+@
+text
+@d1 2
+a4 2
+let rcsid = "$Id$";;
+
+@

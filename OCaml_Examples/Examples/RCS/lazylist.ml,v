@@ -1,0 +1,137 @@
+head	341.2;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+341.2
+date	2004.03.02.01.22.35;	author -;	state -;
+branches;
+next	341.1;
+
+341.1
+date	2004.02.27.04.33.25;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+341.2
+log
+@-
+@
+text
+@(*
+
+type 'a susp = Delay of (unit -> 'a)
+             | Value of 'a
+             | Excep of exn
+
+type 'a thunk = 'a susp ref
+
+let rec force thunk = match !thunk with
+    | Value value -> value
+    | Excep excep -> raise excep
+    | Delay delay -> (thunk := Failure "force";
+                      try thunk := Value (delay ())
+                      with excep -> thunk := Excep excep;
+                      force thunk)
+
+*)
+
+let (!?) = Lazy.force
+
+let prtf = Printf.printf
+
+(* stream and lazy stuff *)
+
+type 'a stream = End | Stream of 'a * 'a stream Lazy.t
+
+let (@@::) hd tl = Stream (hd, tl)
+
+let head stream = match stream with
+    | End -> invalid_arg "head"
+    | Stream (hd, _) -> hd
+
+let tail stream = match stream with
+    | End -> invalid_arg "tail"
+    | Stream (_, tl) -> !?tl
+
+let rec take n stream = match n, stream with
+    | 0, _ when n <= 0 -> End
+    | _, End -> End
+    | _, Stream (hd, tl) -> Stream (hd, lazy (take (n - 1) !?tl))
+
+let rec list_of_stream stream = match stream with
+    | End -> []
+    | Stream (hd, tl) -> hd :: list_of_stream !?tl
+
+let rec iter fn stream = match stream with
+    | End -> ()
+    | Stream (hd, tl) -> (fn hd; iter fn !?tl)
+
+let rec iter2 fn stream1 stream2 = match stream1, stream2 with
+    | End, _ -> ()
+    | _, End -> ()
+    | Stream (hd1, tl1), Stream (hd2, tl2)
+             -> (fn hd1 hd2; iter2 fn !?tl1 !?tl2)
+
+let rec zip fn stream1 stream2 = match stream1, stream2 with
+    | End, _ -> End
+    | _, End -> End
+    | Stream (hd1, tl1), Stream (hd2, tl2)
+             -> Stream (fn hd1 hd2, lazy (zip fn !?tl1 !?tl2))
+
+(* stuff that uses streams and Nums *)
+
+let rec range head limit =
+    if head > limit
+    then End
+    else let next = head + 1
+         in  Stream (head, lazy (range next limit))
+
+let naturals = range 0 max_int
+
+let fac n =
+    let rec fac' n m = match n with
+        | 0 -> m
+        | n -> fac' (n - 1) (n * m)
+    in  if n < 0 then invalid_arg "fac"
+                 else fac' n 1
+
+let printfac n = prtf "%d! = %d\n" n (fac n)
+
+let printfacs n = iter printfac (take n naturals)
+
+(* let fib = 0 : 1 : zip (+) fib (tail fib) *)
+
+let fibstream =
+    let rec fibstream0 = Stream (0, fibstream1)
+        and fibstream1 = lazy (Stream (1, fibstream2))
+        and fibstream2 = lazy (zip (+) fibstream0 !?fibstream1)
+    in  fibstream0
+
+let printfib n nfib = prtf "fib(%d) = %d\n" n nfib
+
+let printfibs n = iter2 printfib naturals (take n fibstream)
+
+@
+
+
+341.1
+log
+@-
+@
+text
+@d10 4
+a13 1
+    | Delay delay -> (try thunk := Value (delay ())
+a15 3
+    | Value value -> value
+    | Excep excep -> raise excep
+
+@

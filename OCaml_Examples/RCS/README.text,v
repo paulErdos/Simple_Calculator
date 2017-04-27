@@ -1,0 +1,157 @@
+head	1.5;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.5
+date	2014.11.17.21.45.18;	author -;	state -;
+branches;
+next	1.4;
+
+1.4
+date	2014.11.17.21.44.49;	author -;	state -;
+branches;
+next	1.3;
+
+1.3
+date	2014.11.17.21.44.26;	author -;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2014.11.17.21.43.48;	author -;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2014.11.17.21.41.33;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@-
+@
+text
+@
+Objective Caml links:
+
+http://www.cs.caltech.edu/courses/cs134/cs134b/
+http://www.cs.caltech.edu/courses/cs134/cs134b/book.pdf
+. ``Introduction to Objective Caml''. [2008]
+. by Jason Hickey.
+
+http://caml.inria.fr/
+. The Objective Caml home page.
+
+http://caml.inria.fr/resources/index.en.html
+. Resources for Caml users
+
+http://caml.inria.fr/resources/doc/index.en.html
+. Caml Documentation
+
+http://caml.inria.fr/resources/doc/faq/index.en.html
+. Frequently asked Questions about Caml
+
+http://caml.inria.fr/pub/old_caml_site/FAQ/exemples-eng.html
+. One hundred lines of Caml.
+
+http://caml.inria.fr/resources/doc/faq/index.en.html
+. Frequently asked Questions about Caml
+
+http://caml.inria.fr/pub/docs/manual-ocaml/
+. The Objective Caml system documentation and user's manual
+
+http://pauillac.inria.fr/~remy/cours/appsem/
+. ``Using, Understanding, and Unraveling The OCaml Language:
+. From Practice to Theory and vice versa''.
+. by Didier Rémy
+
+http://pauillac.inria.fr/cdrom/www/caml/index-eng.html
+. The Caml language
+
+http://caml.inria.fr/oreilly-book/
+. ``Developing Applications with Objective Caml'',
+. by Chailloux, Manoury, Pagano.
+. Published by O'Reilly France.
+
+http://pauillac.inria.fr/~remy/poly/system/
+. ``Principes et Programmation des Systèmes d'exploitation''.
+. ``Programmation du système Unix en Objective Caml''.
+. by Xavier Leroy et Didier Rémy.
+
+$Id: README.text,v 1.4 2014-11-17 13:44:49-08 - - $
+
+@
+
+
+1.4
+log
+@-
+@
+text
+@d48 1
+a48 5
+http:cached-copies
+. Cached copies are limited to on-campus use.
+. Log into unix.ic and access them directly.
+
+$Id: README.text,v 1.3 2014-11-17 13:44:26-08 - - $
+@
+
+
+1.3
+log
+@-
+@
+text
+@a26 3
+http://www.ocaml-tutorial.org/
+. Objective CAML Tutorial
+
+d52 1
+a52 1
+$Id: README.text,v 1.2 2014-11-17 13:43:48-08 - - $
+@
+
+
+1.2
+log
+@-
+@
+text
+@a17 3
+http://caml.inria.fr/pub/ml-archives/caml-list/
+. Archives of the Caml mailing list
+
+d55 1
+a55 1
+$Id: README.text,v 1.1 2014-11-17 13:41:33-08 - - $
+@
+
+
+1.1
+log
+@-
+@
+text
+@a5 1
+http://mojave.caltech.edu/jyh/
+a8 6
+http://www.merjis.com/richj/computers/ocaml/tutorial/
+. ``Learning OCaml, for C, C++, Perl and Java programmers''.
+
+http://www.ocaml-tutorial.org/
+. Objective CAML Tutorial
+
+d58 1
+a58 1
+$Id: README.text,v 363.4 2008-03-03 17:46:24-08 - - $
+@

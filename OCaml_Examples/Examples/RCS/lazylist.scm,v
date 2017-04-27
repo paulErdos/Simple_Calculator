@@ -1,0 +1,85 @@
+head	341.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+341.1
+date	2004.02.27.04.33.25;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+341.1
+log
+@-
+@
+text
+@#!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/bigloo/bin/bigloo
+;; $Id: lazylist.scm,v 341.1 2004-02-26 19:48:00-08 - - $
+;;setenv BIGLOO_DIR /afs/cats.ucsc.edu/courses/cmps112-wm/usr/bigloo
+;;setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${BIGLOO_DIR}/lib
+
+;;
+;; This program shows factorial, the ``hello world'' of functional
+;; programming.  It also shows lazy evaluation.  Note that the
+;; ``positiveintegers'' described below contain a lazy list of all
+;; positive integers in the range $2^29-1$.  Bigloo Scheme uses
+;; 30-bit signed integers.
+;;
+
+;(module lazylist)
+(define (void arg) '())
+
+;(define 2sup29sub1 536870911)
+(define 2sup29sub1 #x1FFFFFFF)
+(void (map display `(,2sup29sub1 " + 1 = " ,(+ 2sup29sub1 1))))
+(newline)
+
+(define (fac n)
+    (if (< n 1) 1
+        (* n (fac (- n 1)))
+))
+
+(define (printfac n)
+    (map display `(,n "! = " ,(fac n)))
+    (newline)
+    #unspecified
+)
+
+(define (.. first last)
+    (if (> first last) '()
+        (delay (cons first (.. (+ first 1) last)))
+))
+
+(define positiveintegers (.. 1 2sup29sub1))
+
+(define (take n lazylist)
+    (if (<= n 0) '()
+        (let ((forcedlist (force lazylist)))
+             (cons (car forcedlist)
+                   (take (- n 1) (cdr forcedlist)))
+)))
+
+(define (lazytake n lazylist)
+    (if (<= n 0) '()
+        (let ((forcedlist (force lazylist)))
+             (delay (cons (car forcedlist)
+                          (lazytake (- n 1) (cdr forcedlist))))
+)))
+
+(define (lazymap fn lazylist)
+    (if (null? lazylist) '()
+        (let ((forcedlist (force lazylist)))
+             (cons (fn (car forcedlist))
+                   (lazymap fn (cdr forcedlist)))
+)))
+
+(void (lazymap printfac (lazytake 13 positiveintegers)))
+
+@

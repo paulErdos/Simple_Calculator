@@ -1,0 +1,32 @@
+head	1.1;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+1.1
+date	2012.02.08.01.25.43;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@(* $Id$ *)
+
+let reverse list =
+    let rev source result = match source with 
+        | [] -> []
+        | car::cdr -> rev cdr (car::result)
+    in rev list []
+;;
+
+@

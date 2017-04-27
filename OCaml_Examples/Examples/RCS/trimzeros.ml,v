@@ -1,0 +1,41 @@
+head	1.1;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+1.1
+date	2009.03.04.20.43.00;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@(* $Id$ *)
+
+(*
+* Trim off zeros from the end of a list.
+*)
+
+let trimzeros list =
+    let rec trimzeros' list' = match list' with
+        | []       -> []
+        | [0]      -> []
+        | car::cdr ->
+             let cdr' = trimzeros' cdr
+             in  match car, cdr' with
+                 | 0, [] -> []
+                 | car, cdr' -> car::cdr'
+    in trimzeros' list
+;;
+
+@

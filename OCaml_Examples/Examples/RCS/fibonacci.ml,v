@@ -1,0 +1,105 @@
+head	342.1;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+342.1
+date	2004.03.17.01.03.57;	author -;	state -;
+branches;
+next	330.2;
+
+330.2
+date	2003.01.03.00.18.34;	author -;	state -;
+branches;
+next	330.1;
+
+330.1
+date	2003.01.03.00.06.08;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+342.1
+log
+@-
+@
+text
+@(* $Id: fibonacci.ml,v 330.2 2003-01-02 16:18:34-08 - - $ *)
+(*
+* Fibonacci function.
+* Done three ways:
+* - O(2^n), which is bad
+* - O(n), which is good
+* - mathematically, which is clever
+*)
+
+let rec fib2n = function
+    | 0 -> 0
+    | 1 -> 1
+    | n when n > 1 -> fib2n (n - 1) + fib2n (n - 2)
+    | n            -> invalid_arg (string_of_int n)
+    ;;
+
+let fib n =
+    let rec fib' n a b =
+        if n = 0 then a
+                 else fib' (n - 1) b (a + b)
+    in  if n < 0 then invalid_arg ("fib " ^ string_of_int n)
+                 else fib' n 0 1
+    ;;
+
+let fibmath n =
+    let root5   = sqrt 5.             and
+        floatn  = float n             in
+    let phi     = (1. +. root5) /. 2. and
+        psi     = (1. -. root5) /. 2.
+    in  (phi ** floatn -. psi ** floatn) /. root5
+    ;;
+
+@
+
+
+330.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: fibonacci.ml,v 330.1 2003-01-02 16:06:08-08 - - $ *)
+d21 1
+a21 1
+    in  if n < 0 then invalid_arg (string_of_int n)
+d27 1
+a27 2
+        floatn  = float n             and
+        round x = truncate (x +. 0.5) in
+d30 1
+a30 1
+    in  round ((phi ** floatn -. psi ** floatn) /. root5)
+@
+
+
+330.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id$ *)
+d26 6
+a31 6
+    let root5 = sqrt 5.
+    and phi = (1. +. root5) /. 2.
+    and psi = (1. -. root5) /. 2.
+    and floatn = float n 
+    and result = (phi ** floatn - psi ** floatn) /. root5
+    in floor (result +. .5)
+@

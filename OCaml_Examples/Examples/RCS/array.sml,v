@@ -1,0 +1,210 @@
+head	321.7;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+321.7
+date	2002.02.27.00.01.17;	author -;	state -;
+branches;
+next	321.6;
+
+321.6
+date	2002.02.27.00.00.50;	author -;	state -;
+branches;
+next	321.5;
+
+321.5
+date	2002.02.26.23.58.52;	author -;	state -;
+branches;
+next	321.4;
+
+321.4
+date	2002.02.26.23.56.22;	author -;	state -;
+branches;
+next	321.3;
+
+321.3
+date	2002.02.26.23.54.53;	author -;	state -;
+branches;
+next	321.2;
+
+321.2
+date	2002.02.26.23.54.35;	author -;	state -;
+branches;
+next	321.1;
+
+321.1
+date	2002.02.26.23.49.24;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+321.7
+log
+@-
+@
+text
+@(* $Id: array.sml,v 321.6 2002-02-26 16:00:50-08 - - $ *)
+
+(*
+* Create an array, update it with the square roots of its subscripts,
+* and print it out.
+*)
+
+load "Array";
+load "Int";
+load "Math";
+load "Real";
+
+val array    = Array.array;
+val intstr   = Int.toString;
+val realstr  = Real.toString;
+val sqrt     = Math.sqrt;
+val sub      = Array.sub;
+val update   = Array.update;
+
+infixr 5 :::;
+fun op::: (lwb, upb) =
+    if lwb > upb then [] else lwb :: (lwb + 1 ::: upb);
+
+infixr 5 ::::;
+fun op:::: (lwb, upb) =
+    if lwb > upb then [] else lwb :: (lwb + 1.0 :::: upb);
+
+val dim = 20;
+val indices = 0 ::: dim - 1;
+val data = array (dim, 0.0);
+
+map (fn index => update (data, index, sqrt (real index)))
+    indices;
+
+map (fn index => print ( (intstr index)
+                       ^ " => "
+                       ^ (realstr (sub (data, index)))
+                       ^ "\n"))
+    indices;
+
+quit ();
+
+@
+
+
+321.6
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: array.sml,v 321.5 2002-02-26 15:58:52-08 - - $ *)
+d29 1
+a29 1
+val indices = 0.0 :::: real dim - 1.0;
+@
+
+
+321.5
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: array.sml,v 321.4 2002-02-26 15:56:22-08 - - $ *)
+d4 1
+a4 1
+* Create an array, update it with the squares of its subscripts,
+d10 1
+d16 1
+d30 1
+a30 1
+val data = array (dim, 0);
+d32 2
+a33 1
+map (fn index => update (data, index, index * index)) indices;
+@
+
+
+321.4
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: array.sml,v 321.3 2002-02-26 15:54:53-08 - - $ *)
+d10 1
+d13 2
+a15 1
+val tostring = Int.toString;
+d20 1
+a20 1
+    if lwb > upb then [] else lwb :: (lwb + 1.0 ::: upb);
+d22 4
+d27 1
+a27 1
+val indices = 0.0 ::: real dim - 1;
+d32 1
+a32 1
+map (fn index => print ( (tostring index)
+d34 1
+a34 1
+                       ^ (tostring (sub (data, index)))
+@
+
+
+321.3
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: array.sml,v 321.2 2002-02-26 15:54:35-08 - - $ *)
+d18 1
+a18 1
+    if lwb > upb then [] else lwb :: (lwb + 1 ::: upb);
+d21 1
+a21 1
+val indices = 0 ::: dim - 1;
+@
+
+
+321.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: array.sml,v 321.1 2002-02-26 15:49:24-08 - - $ *)
+d31 2
+@
+
+
+321.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id$ *)
+d8 2
+a9 3
+infixr ... 5;
+fun ... (lwb, upb) =
+    if lwb > upb then [] else lwb :: (lwb + 1 ... upb);
+d11 4
+a14 3
+val dim = 10;
+val indices = 0 ... dim - 1;
+val data = array (10, 0);
+d16 8
+@

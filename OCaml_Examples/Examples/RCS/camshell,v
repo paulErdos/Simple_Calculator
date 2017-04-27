@@ -1,0 +1,81 @@
+head	347.4;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+347.4
+date	2004.09.24.20.30.23;	author -;	state -;
+branches;
+next	347.3;
+
+347.3
+date	2004.09.24.20.28.07;	author -;	state -;
+branches;
+next	347.2;
+
+347.2
+date	2004.09.24.20.27.37;	author -;	state -;
+branches;
+next	347.1;
+
+347.1
+date	2004.09.24.20.27.24;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+347.4
+log
+@-
+@
+text
+@#!/bin/env ocaml 
+(* $Id: camshell,v 347.3 2004-09-24 13:28:07-07 - - $ *)
+let printf = Printf.printf;;
+let aiteri = Array.iteri;;
+printf "executable_name = %s\n" Sys.executable_name;;
+aiteri (fun i s -> printf "argv.(%d) = %s\n" i s) Sys.argv;;
+@
+
+
+347.3
+log
+@-
+@
+text
+@d1 2
+a2 2
+#!/bin/env ocaml camshell
+(* $Id: camshell,v 347.2 2004-09-24 13:27:37-07 - - $ *)
+@
+
+
+347.2
+log
+@-
+@
+text
+@d2 1
+a2 1
+(* $Id: camshell,v 347.1 2004-09-24 13:27:24-07 - - $ *)
+d6 1
+a6 1
+aiteri (printf "argv.(%d) = %s\n") Sys.argv;;
+@
+
+
+347.1
+log
+@-
+@
+text
+@d2 1
+a2 1
+# $Id$
+@

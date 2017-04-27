@@ -1,0 +1,49 @@
+
+Objective Caml links:
+
+http://www.cs.caltech.edu/courses/cs134/cs134b/
+http://www.cs.caltech.edu/courses/cs134/cs134b/book.pdf
+. ``Introduction to Objective Caml''. [2008]
+. by Jason Hickey.
+
+http://caml.inria.fr/
+. The Objective Caml home page.
+
+http://caml.inria.fr/resources/index.en.html
+. Resources for Caml users
+
+http://caml.inria.fr/resources/doc/index.en.html
+. Caml Documentation
+
+http://caml.inria.fr/resources/doc/faq/index.en.html
+. Frequently asked Questions about Caml
+
+http://caml.inria.fr/pub/old_caml_site/FAQ/exemples-eng.html
+. One hundred lines of Caml.
+
+http://caml.inria.fr/resources/doc/faq/index.en.html
+. Frequently asked Questions about Caml
+
+http://caml.inria.fr/pub/docs/manual-ocaml/
+. The Objective Caml system documentation and user's manual
+
+http://pauillac.inria.fr/~remy/cours/appsem/
+. ``Using, Understanding, and Unraveling The OCaml Language:
+. From Practice to Theory and vice versa''.
+. by Didier Rémy
+
+http://pauillac.inria.fr/cdrom/www/caml/index-eng.html
+. The Caml language
+
+http://caml.inria.fr/oreilly-book/
+. ``Developing Applications with Objective Caml'',
+. by Chailloux, Manoury, Pagano.
+. Published by O'Reilly France.
+
+http://pauillac.inria.fr/~remy/poly/system/
+. ``Principes et Programmation des Systèmes d'exploitation''.
+. ``Programmation du système Unix en Objective Caml''.
+. by Xavier Leroy et Didier Rémy.
+
+$Id: README.text,v 1.5 2014-11-17 13:45:18-08 - - $
+

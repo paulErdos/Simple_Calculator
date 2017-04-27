@@ -1,0 +1,90 @@
+head	321.3;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+321.3
+date	2002.02.12.00.18.11;	author -;	state -;
+branches;
+next	321.2;
+
+321.2
+date	2002.02.12.00.17.57;	author -;	state -;
+branches;
+next	321.1;
+
+321.1
+date	2002.02.07.20.58.23;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+321.3
+log
+@-
+@
+text
+@(* $Id: factorial.sml,v 321.2 2002-02-11 16:17:57-08 - - $ *)
+(* Factorial example. *)
+
+exception Factorial;
+
+fun fac( n ) =
+    let
+       fun fac'( 0 ) = 1
+         | fac'( n ) = n * fac'( n - 1 );
+    in
+       if n < 0 then raise Factorial else fac'( n )
+    end;
+
+fac(6);
+
+fun rfac( x ) =
+    let
+       fun fac'( 0.0 ) = 1.0
+         | fac'( x ) = x * fac'( x - 1.0 );
+    in
+       if x < 0.0 then raise Factorial else fac'( x )
+    end;
+
+@
+
+
+321.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: factorial.sml,v 321.1 2002-02-07 12:58:23-08 - - $ *)
+d21 1
+a21 1
+       if x < 0.0 then raise Factorial else fac'( x );
+@
+
+
+321.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id$ *)
+d7 6
+a12 6
+   let
+      fun fac'( 0 ) = 1
+        | fac'( n ) = n * fac'( n - 1 );
+   in
+      if n < 0 then raise Factorial else fac'( n )
+   end;
+d15 8
+@

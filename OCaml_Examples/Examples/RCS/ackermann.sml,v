@@ -1,0 +1,42 @@
+head	321.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+321.1
+date	2002.02.07.20.58.23;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+321.1
+log
+@-
+@
+text
+@(* $Id$ *)
+(* Ackermann's Function *)
+
+fun ack( 0, 0, k ) = k
+  | ack( 0, j, k ) = ack( 0, j - 1, k ) + 1
+  | ack( 1, 0, k ) = 0
+  | ack( i, 0, k ) = 1
+  | ack( i, j, k ) = ack( i - 1, ack( i, j - 1, k), k )
+  ;
+
+(*
+ * Prove that:
+ *    ack( 0, j, k ) is k + j
+ *    ack( 1, j, k ) is k * j
+ *    ack( 2, j, k ) is k ** j
+ *
+ * What is ack( 3, j, k )?
+ *)
+
+@

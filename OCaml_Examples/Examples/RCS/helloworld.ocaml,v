@@ -1,0 +1,52 @@
+head	1.2;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.2
+date	2008.03.07.02.14.34;	author -;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2008.02.23.02.11.54;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@-
+@
+text
+@#!/bin/env /afs/cats.ucsc.edu/courses/cmps112-wm/usr/ocaml/bin/ocaml
+
+open Printf;;
+
+let rcsid = "$Id: helloworld.ocaml,v 1.1 2008-02-22 18:11:54-08 - - $";;
+
+printf "%s\n" rcsid;;
+printf "Hello, World!\n";;
+
+exit 0;;
+@
+
+
+1.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+#!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/ocaml/bin/ocaml
+d5 1
+a5 1
+let rcsid = "$Id: helloworld.ml,v 329.1 2002-12-20 11:54:36-08 - - $";;
+@

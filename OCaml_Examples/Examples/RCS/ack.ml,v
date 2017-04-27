@@ -1,0 +1,34 @@
+head	330.1;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+330.1
+date	2003.01.03.23.01.22;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+330.1
+log
+@-
+@
+text
+@(* $Id: ackermann2.ml,v 330.2 2003-01-03 15:01:13-08 - - $ *)
+(*
+* More usual version of Ackermann's function,
+* using only two parameters.
+*)
+
+let rec ack m n = match (m, n) with
+    | (0, n) -> n + 1
+    | (m, 0) -> ack (m - 1) 1
+    | (m, n) -> ack (m - 1) (ack m (n - 1))
+;;
+@

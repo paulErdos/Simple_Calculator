@@ -1,0 +1,73 @@
+head	361.2;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+361.2
+date	2006.03.03.22.36.37;	author -;	state -;
+branches;
+next	361.1;
+
+361.1
+date	2006.02.22.02.59.04;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+361.2
+log
+@-
+@
+text
+@(* $Id: qsort.ml,v 361.1 2006-02-21 18:59:04-08 - - $ *)
+
+(*
+* Tricky version of qsort.  
+* Note:  O(n^2) if pivot is badly chosen.
+*)
+
+let filter = List.filter ;;
+let compose f g x = f (g x) ;;
+
+let rec qsort (<?) list = match list with
+    | [] -> []
+    | car::[] -> list
+    | car::cdr -> 
+      let (large) = filter ((<?) car) cdr
+      and (small) = filter (compose not ((<?) car)) cdr
+      in qsort (<?) small @@ [car] @@ qsort (<?) large
+    ;;
+
+let thelist = [6; 7; 11; 8; 4; 2; 9; -4; 10] ;;
+
+qsort (<) thelist ;;
+qsort (>) thelist ;;
+
+@
+
+
+361.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id$ *)
+d8 2
+a9 2
+let filter = List.filter;;
+let compose f g x = f (g x);;
+d15 4
+a18 3
+      let (<..) = filter (<?) cdr
+      and (>=..) = filter (compose not (<?)) cdr
+      in (<..) @@ car @@ (>=..);;
+d20 4
+@

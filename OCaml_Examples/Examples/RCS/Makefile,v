@@ -1,0 +1,59 @@
+head	1.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.1
+date	2011.04.23.03.30.48;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@# $Id: Makefile,v 330.1 2003-02-04 13:13:42-08 - - $
+
+SRCS    = \
+	ackermann.ml \
+	argv.ml \
+	exponent.ml \
+	factorial.ml \
+	fibonacci.ml \
+	helloworld.ml \
+	hof.ml \
+	mergesort.ml \
+	msorttailrec.ml \
+	ncat.ml \
+	qsort.ml
+BINS    = ${patsubst %.ml, %.b, ${SRCS}}
+TYPES   = ${patsubst %.ml, %.types, ${SRCS}}
+LISS    = ${SRCS} Makefile
+LISTING = Listing.ps
+
+all: ${BINS}
+
+types: ${TYPES}
+
+%.types: %.ml
+	ocamlc -i $< >$@@
+
+%.b: %.ml
+	cid $<
+	ocamlc $< -o $@@
+	ocamlc -i $< >$<i.types
+
+lis: ${SRCS}
+	enscript -G -p ${LISTING} ${LISS}
+	gh ${LISTING} &
+	ps2pdf ${LISTING}
+
+@

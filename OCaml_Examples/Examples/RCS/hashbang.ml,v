@@ -1,0 +1,403 @@
+head	361.2;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+361.2
+date	2006.02.17.21.30.32;	author -;	state -;
+branches;
+next	361.1;
+
+361.1
+date	2006.02.17.21.27.08;	author -;	state -;
+branches;
+next	331.16;
+
+331.16
+date	2003.02.15.02.15.08;	author -;	state -;
+branches;
+next	331.15;
+
+331.15
+date	2003.02.15.02.13.25;	author -;	state -;
+branches;
+next	331.14;
+
+331.14
+date	2003.02.15.02.11.31;	author -;	state -;
+branches;
+next	331.13;
+
+331.13
+date	2003.02.15.02.11.12;	author -;	state -;
+branches;
+next	331.12;
+
+331.12
+date	2003.02.15.02.10.34;	author -;	state -;
+branches;
+next	331.11;
+
+331.11
+date	2003.02.15.02.09.17;	author -;	state -;
+branches;
+next	331.10;
+
+331.10
+date	2003.02.15.02.08.23;	author -;	state -;
+branches;
+next	331.9;
+
+331.9
+date	2003.02.15.02.02.48;	author -;	state -;
+branches;
+next	331.8;
+
+331.8
+date	2003.02.15.02.01.34;	author -;	state -;
+branches;
+next	331.7;
+
+331.7
+date	2003.02.15.02.01.02;	author -;	state -;
+branches;
+next	331.6;
+
+331.6
+date	2003.02.15.02.00.48;	author -;	state -;
+branches;
+next	331.5;
+
+331.5
+date	2003.02.15.02.00.12;	author -;	state -;
+branches;
+next	331.4;
+
+331.4
+date	2003.02.15.02.00.00;	author -;	state -;
+branches;
+next	331.3;
+
+331.3
+date	2003.02.14.22.50.34;	author -;	state -;
+branches;
+next	331.2;
+
+331.2
+date	2003.02.14.22.40.16;	author -;	state -;
+branches;
+next	331.1;
+
+331.1
+date	2003.02.14.22.38.42;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+361.2
+log
+@-
+@
+text
+@#!/bin/env ocaml
+
+(*
+* Example of how to run ocaml as a script.
+*
+* Normally, one could just name the executable (ocaml) to be used
+* as the interpreter, since ocaml ignores the first line if it
+* begins with a hashbang.  However, since ocaml is itself an
+* executable
+* /afs/cats.ucsc.edu/courses/cmps112-wm/usr/ocaml/bin/ocamlrun
+* script, we can not hashbang a hashbanged script.  So we run
+* /bin/env instead, which in turn just runs its single argument.
+*)
+
+open Printf;;
+
+let rcsid = "$Id: hashbang.ml,v 361.1 2006-02-17 13:27:08-08 - - $";;
+
+printf "rcsid = %s\n" rcsid;;
+printf "interactive = %b\n" !Sys.interactive;;
+printf "word_size = %d\n" Sys.word_size;;
+printf "max_string_length = %d = 0x%08X\n"
+       Sys.max_string_length Sys.max_string_length;;
+printf "max_array_length = %d = 0x%08X\n"
+       Sys.max_array_length Sys.max_array_length;;
+printf "getcwd () = %s\n" (Sys.getcwd ());;
+printf "os_type = %s\n" Sys.os_type;;
+
+printf "executable_name = %s\n" Sys.executable_name;;
+Array.iteri (fun i s -> printf "argv.(%d) = %s\n" i s) Sys.argv;;
+
+@
+
+
+361.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+#!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/ocaml/bin/ocaml
+d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.16 2003-02-14 18:15:08-08 - - $";;
+@
+
+
+331.16
+log
+@-
+@
+text
+@d1 1
+a1 1
+#!/bin/env ocaml
+d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.15 2003-02-14 18:13:25-08 - - $";;
+@
+
+
+331.15
+log
+@-
+@
+text
+@d1 1
+a1 1
+#!/bin/env /afs/cats.ucsc.edu/courses/cmps112-wm/usr/ocaml/bin/ocaml
+d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.14 2003-02-14 18:11:31-08 - - $";;
+@
+
+
+331.14
+log
+@-
+@
+text
+@d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.13 2003-02-14 18:11:12-08 - - $";;
+d22 4
+a25 2
+printf "max_string_length = %d\n" Sys.max_string_length;;
+printf "max_array_length = %d\n" Sys.max_array_length;;
+@
+
+
+331.13
+log
+@-
+@
+text
+@d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.12 2003-02-14 18:10:34-08 - - $";;
+d19 1
+a19 1
+printf "rcsid = [%s]\n" rcsid;;
+d24 2
+a25 2
+printf "getcwd () = [%s]\n" (Sys.getcwd ());;
+printf "os_type = [%s]\n" Sys.os_type;;
+d27 2
+a28 2
+printf "executable_name = [%s]\n" Sys.executable_name;;
+Array.iteri (fun i s -> printf "argv.(%d) = [%s]\n" i s) Sys.argv;;
+@
+
+
+331.12
+log
+@-
+@
+text
+@d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.11 2003-02-14 18:09:17-08 - - $";;
+d20 6
+a25 6
+printf "!Sys.interactive = %b\n" !Sys.interactive;;
+printf "Sys.word_size = %d\n" Sys.word_size;;
+printf "Sys.max_string_length = %d\n" Sys.max_string_length;;
+printf "Sys.max_array_length = %d\n" Sys.max_array_length;;
+printf "Sys.getcwd () = [%s]\n" (Sys.getcwd ());;
+printf "Sys.os_type = [%s]\n" Sys.os_type;;
+d27 2
+a28 2
+printf "Sys.executable_name = [%s]\n" Sys.executable_name;;
+Array.iteri (fun i s -> printf "Sys.argv.(%d) = [%s]\n" i s) Sys.argv;;
+@
+
+
+331.11
+log
+@-
+@
+text
+@d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.10 2003-02-14 18:08:23-08 - - $";;
+d20 5
+a24 5
+printf "!Sys.interactive      = %12b\n" !Sys.interactive;;
+printf "Sys.word_size         = %12d\n" Sys.word_size;;
+printf "Sys.max_string_length = %12d\n" Sys.max_string_length;;
+printf "Sys.max_array_length  = %12d\n" Sys.max_array_length;;
+printf "(Sys.getcwd ()) = [%s]\n" (Sys.getcwd ());;
+@
+
+
+331.10
+log
+@-
+@
+text
+@d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.9 2003-02-14 18:02:48-08 - - $";;
+a19 2
+printf "(Sys.getcwd ()) = [%s]\n" (Sys.getcwd ());;
+printf "Sys.os_type = [%s]\n" Sys.os_type;;
+d24 4
+a27 1
+printf "Sys.executable_name   = [%s]\n" Sys.executable_name;;
+@
+
+
+331.9
+log
+@-
+@
+text
+@d17 1
+a17 2
+let rcsid = "$Id: hashbang.ml,v 331.8 2003-02-14 18:01:34-08 - - $";;
+let printarg index string = printf "argv.(%d) = [%s]\n" index string;;
+d20 8
+a27 8
+printf "cwd = [%s]\n" (Sys.getcwd ());;
+printf "interactive = %b\n" !Sys.interactive;;
+printf "os_type = [%s]\n" Sys.os_type;;
+printf "word_size = %d\n" Sys.word_size;;
+printf "max_string_length = %d\n" Sys.max_string_length;;
+printf "max_array_length = %d\n" Sys.max_array_length;;
+printf "executable_name = [%s]\n" Sys.executable_name;;
+Array.iteri printarg Sys.argv;;
+@
+
+
+331.8
+log
+@-
+@
+text
+@d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.7 2003-02-14 18:01:02-08 - - $";;
+a20 2
+printf "executable_name = [%s]\n" Sys.executable_name;;
+Array.iteri printarg Sys.argv;;
+d27 2
+@
+
+
+331.7
+log
+@-
+@
+text
+@d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.6 2003-02-14 18:00:48-08 - - $";;
+d23 1
+a23 1
+printf "cwd = [%s]\n" Sys.getcwd;;
+@
+
+
+331.6
+log
+@-
+@
+text
+@d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.5 2003-02-14 18:00:12-08 - - $";;
+d20 1
+a20 1
+printf "RCSID = [%s]\n" RCSID;;
+@
+
+
+331.5
+log
+@-
+@
+text
+@d17 1
+a17 1
+let rcsid = "$Id: hashbang.ml,v 331.4 2003-02-14 18:00:00-08 - - $";;
+d20 1
+a20 1
+printf "RCSID = [%s]\n" RCSID
+@
+
+
+331.4
+log
+@-
+@
+text
+@d17 1
+a17 1
+let RCSID = "$Id: hashbang.ml,v 331.3 2003-02-14 14:50:34-08 - - $";;
+@
+
+
+331.3
+log
+@-
+@
+text
+@d1 1
+a1 1
+#!/afs/cats.ucsc.edu/courses/cmps112-wm/usr/ocaml/bin/ocaml
+d3 26
+a28 2
+Printf.printf "%s\n"
+"$Id: hashbang.ml,v 331.2 2003-02-14 14:40:16-08 - - $";;
+@
+
+
+331.2
+log
+@-
+@
+text
+@d4 2
+a5 1
+"$Id: hashbang.ml,v 331.1 2003-02-14 14:38:42-08 - - $";;
+@
+
+
+331.1
+log
+@-
+@
+text
+@d3 2
+a4 1
+Printf.printf "%s\n" "$Id$"::
+@

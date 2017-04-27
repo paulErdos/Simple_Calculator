@@ -1,0 +1,391 @@
+head	361.7;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+361.7
+date	2008.03.07.02.14.34;	author -;	state -;
+branches;
+next	361.6;
+
+361.6
+date	2008.03.07.01.48.42;	author -;	state -;
+branches;
+next	361.5;
+
+361.5
+date	2008.03.06.02.34.19;	author -;	state -;
+branches;
+next	361.4;
+
+361.4
+date	2008.03.01.00.20.42;	author -;	state -;
+branches;
+next	361.3;
+
+361.3
+date	2008.03.01.00.19.33;	author -;	state -;
+branches;
+next	361.2;
+
+361.2
+date	2008.03.01.00.07.23;	author -;	state -;
+branches;
+next	361.1;
+
+361.1
+date	2006.03.03.22.31.59;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+361.7
+log
+@-
+@
+text
+@(* $Id: hof.ml,v 361.6 2008-03-06 17:48:42-08 - - $ *)
+
+let compose f g x = f (g x)
+
+let compose2 f g x y = f (g x y)
+
+let swap f x y = f y x
+
+let even x = x mod 2 = 0
+
+let odd = compose not even
+
+let cons car cdr = car::cdr
+
+let rec foldl fn unit list = match list with
+    | [] -> unit
+    | car::cdr -> foldl fn (fn unit car) cdr
+
+let rec foldr fn unit list = match list with
+    | [] -> unit
+    | car::cdr -> fn car (foldr fn unit cdr)
+
+let rec foldl2 fn unit list1 list2 = match list1, list2 with
+    | [], [] -> unit
+    | car1::cdr1, car2::cdr2 -> foldl2 fn (fn unit car1 car2) cdr1 cdr2
+    | _, _ -> raise (Invalid_argument "foldl2")
+
+let rec foldr2 fn unit list1 list2 = match list1, list2 with
+    | [], [] -> unit
+    | car1::cdr1, car2::cdr2 -> fn car1 car2 (foldr2 fn unit cdr1 cdr2)
+    | _, _ -> raise (Invalid_argument "foldl2")
+
+let sum = foldl (+) 0
+
+let lengthrec list =
+    let rec lengthrec' list' len' = match list' with
+        | [] -> len'
+        | _::cdr -> lengthrec' cdr (len' + 1)
+    in  lengthrec' list 0
+
+let lengthf list = foldl (fun len _ -> len + 1) 0 list
+
+let reverserec list =
+    let rec reverserec' list' revlist = match list' with
+        | [] -> revlist
+        | car::cdr -> reverserec' cdr (car::revlist)
+    in  reverserec' list []
+
+let reversef list = foldl (swap cons) [] list
+
+let filterrec test list =
+    let rec filterrec' list' = match list' with
+        | [] -> []
+        | car::cdr when test car -> car :: (filterrec' cdr)
+        | _::cdr -> filterrec' cdr
+    in  filterrec' list
+
+let filterf test =
+    foldr (fun car cdr -> if test car then car::cdr else cdr) []
+
+let maprec fn list =
+    let rec maprec' list' = match list' with
+        | [] -> []
+        | car::cdr -> (fn car) :: maprec' cdr
+    in  maprec' list
+
+let mapf fn = foldr (compose cons fn) []
+
+let mapf2 fn = foldr2 (compose2 cons fn) []
+
+let innerprodl = foldl2 (fun sum val1 val2 -> sum + val1 * val2) 0
+
+let innerprodr = foldr2 (compose2 (+) ( * )) 0
+
+let rec memberrec elt list = match list with
+    | [] -> false
+    | car::_ when car = elt -> true
+    | _::cdr -> memberrec elt cdr
+
+let memberf elt = foldl (fun car cdr -> car = elt || cdr) false
+
+let zipf list1 list2 = mapf2 (fun a b -> a, b) list1 list2
+
+let qsort (<?) list =
+    let (>=?) x y = not (x <? y) in
+    let rec qsort' list' = match list' with
+        | [] -> []
+        | car::cdr ->
+            qsort' (filterf (swap (<?) car) cdr)
+          @@ [car]
+          @@ qsort' (filterf (swap (>=?) car) cdr)
+    in  qsort' list
+    
+@
+
+
+361.6
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: hof.ml,v 361.5 2008-03-05 18:34:19-08 - - $ *)
+d35 2
+a36 2
+let lengthr list =
+    let rec lengthr' list' len' = match list' with
+d38 2
+a39 2
+        | _::cdr -> lengthr' cdr (len' + 1)
+    in  lengthr' list 0
+d41 1
+a41 1
+let lengthf list = foldl (fun n _ -> n + 1) 0 list
+d43 2
+a44 2
+let reverser list =
+    let rec reverser' list' revlist = match list' with
+d46 2
+a47 2
+        | car::cdr -> reverser' cdr (car::revlist)
+    in  reverser' list []
+d51 2
+a52 2
+let filterr test list =
+    let rec filterr' list' = match list' with
+d54 3
+a56 3
+        | car::cdr when test car -> car :: (filterr' cdr)
+        | _::cdr -> filterr' cdr
+    in  filterr' list
+d61 2
+a62 2
+let mapr fn list =
+    let rec mapr' list' = match list' with
+d64 2
+a65 2
+        | car::cdr -> (fn car) :: mapr' cdr
+    in  mapr' list
+d71 1
+a71 1
+let innerprod = foldl2 (fun sum val1 val2 -> sum + val1 * val2) 0
+d73 3
+a75 1
+let rec memberr elt list = match list with
+d78 1
+a78 1
+    | _::cdr -> memberr elt cdr
+@
+
+
+361.5
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: hof.ml,v 361.4 2008-02-29 16:20:42-08 - - $ *)
+d5 2
+d17 1
+a17 1
+    | car::cdr -> foldl fn (fn car unit) cdr
+d23 9
+a31 1
+let sum = foldl (+.) 0.
+d33 1
+a33 1
+let prod = foldl ( *.) 1.
+d41 1
+a41 1
+let lengthf = foldl (fun n _ -> n + 1) 0
+d44 1
+a44 1
+    let rec reverser' list' revlist = match list with
+d49 1
+a49 1
+let reversef list = foldl (fun car cdr -> car::cdr) []
+d67 14
+a80 1
+let mapf fn = foldr (fun car cdr -> (fn car) :: cdr) []
+a90 7
+
+let rec memberr elt list = match list with
+    | [] -> false
+    | car::_ when car = elt -> true
+    | _::cdr -> memberr elt cdr
+
+let memberf elt = foldl (fun car cdr -> car = elt || cdr) false
+@
+
+
+361.4
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: hof.ml,v 361.3 2008-02-29 16:19:33-08 - - $ *)
+d23 1
+a23 1
+let prod = foldl ( *. ) 1.
+d25 5
+a29 1
+let len list = foldl (fun n _ -> n + 1) 0 list
+d31 4
+a34 2
+let xreverse list =
+    let rec xreverse' list revlist = match list with
+d36 2
+a37 2
+        | car::cdr -> xreverse' cdr (car::revlist)
+    in  xreverse' list []
+d39 1
+a39 1
+let reverse list = foldl (fun car cdr -> car::cdr) [] list
+d41 2
+a42 2
+let xgrep test list =
+    let rec xgrep' list' = match list' with
+d44 3
+a46 3
+        | car::cdr when test car -> car :: xgrep' cdr
+        | _::cdr -> xgrep' cdr
+    in  xgrep' list
+d48 2
+a49 2
+let grep test list =
+    foldr (fun car cdr -> if test car then car::cdr else cdr) [] list
+d51 2
+a52 2
+let xmap fn list =
+    let rec xmap' list' = match list' with
+d54 2
+a55 2
+        | car::cdr -> fn car :: xmap' cdr
+    in  xmap' list
+d57 1
+a57 1
+let map fn list = foldr (fun car cdr -> fn car :: cdr) [] list
+d64 1
+a64 1
+            qsort' (grep (swap (<?) car) cdr)
+d66 1
+a66 1
+          @@ qsort' (grep (swap (>=?) car) cdr)
+d68 8
+@
+
+
+361.3
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: hof.ml,v 361.2 2008-02-29 16:07:23-08 - - $ *)
+d35 2
+a36 2
+let xfilter test list =
+    let rec xfilter' list' = match list' with
+d38 3
+a40 3
+        | car::cdr when test car -> car :: xfilter' cdr
+        | _::cdr -> xfilter' cdr
+    in  xfilter' list
+d42 1
+a42 1
+let filter test list =
+d58 1
+a58 1
+            qsort' (filter (swap (<?) car) cdr)
+d60 1
+a60 1
+          @@ qsort' (filter (swap (>=?) car) cdr)
+@
+
+
+361.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: hof.ml,v 361.1 2006-03-03 14:31:59-08 - - $ *)
+a3 1
+;;
+a5 1
+;;
+a7 1
+;;
+d10 2
+a11 1
+;;
+a15 1
+;;
+a19 1
+;;
+a21 1
+;;
+a23 1
+;;
+a25 1
+;;
+a31 1
+;;
+d33 1
+a33 2
+let reverse list = foldl (fun cdr car -> car::cdr) [] list
+;;
+a40 1
+;;
+a43 1
+;;
+a49 1
+;;
+a51 1
+;;
+a61 1
+;;
+@
+
+
+361.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id$ *)
+d17 1
+a17 1
+    | car::cdr -> foldl fn (fn unit car) cdr
+@

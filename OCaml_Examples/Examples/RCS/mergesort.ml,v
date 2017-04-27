@@ -1,0 +1,347 @@
+head	361.4;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+361.4
+date	2014.11.17.22.07.55;	author -;	state -;
+branches;
+next	361.3;
+
+361.3
+date	2006.03.03.22.36.35;	author -;	state -;
+branches;
+next	361.2;
+
+361.2
+date	2006.03.03.22.36.12;	author -;	state -;
+branches;
+next	361.1;
+
+361.1
+date	2006.03.03.22.25.51;	author -;	state -;
+branches;
+next	342.1;
+
+342.1
+date	2004.03.17.01.03.57;	author -;	state -;
+branches;
+next	341.1;
+
+341.1
+date	2004.02.10.01.36.33;	author -;	state -;
+branches;
+next	330.3;
+
+330.3
+date	2003.01.28.20.19.12;	author -;	state -;
+branches;
+next	330.2;
+
+330.2
+date	2003.01.28.19.25.26;	author -;	state -;
+branches;
+next	330.1;
+
+330.1
+date	2003.01.28.19.11.50;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+361.4
+log
+@-
+@
+text
+@(* $Id: mergesort.ml,v 361.3 2006-03-03 14:36:35-08 - - $ *)
+
+(*
+* Merge sort example.
+* First, we define it as three separate list processing functions.
+* Note that neither merge nor split are tail recursive.
+*)
+
+let rec merge (<?) list1 list2 = match (list1, list2) with
+    | ([], list2) -> list2
+    | (list1, []) -> list1
+    | ((car1::cdr1 as list1), (car2::cdr2 as list2))
+                  -> if car1 <? car1
+                     then car1 :: merge (<?) cdr1 list2
+                     else car2 :: merge (<?) list1 cdr2
+;;
+
+let rec split list = match list with
+    | []              -> ([], [])
+    | [_] as list'    -> (list', [])
+    | car::cadr::cddr -> let (list1, list2) = split cddr
+                         in  (car::list1, cadr::list2)
+;;
+
+let rec msort (<?) list = match list with
+    | []             -> []
+    | _::[] as list' -> list'
+    | list           -> let (list1, list2) = split list
+                        in merge (<?) (msort (<?) list1)
+                                      (msort (<?) list2)
+;;
+
+let sort1 : int list -> int list = msort (<);;
+
+
+(*
+* An alternate definition using nested functions and fewer
+* parameters internally.  However, merge' and split' are not
+* tail recursive.
+*)
+
+let mergesort (<?) list =
+    let rec merge' list1 list2 = match (list1, list2) with
+        | ([], list2) -> list2
+        | (list1, []) -> list1
+        | ((car1::cdr1 as list1), (car2::cdr2 as list2))
+                      -> if (<?) car1 car2
+                         then car1 :: merge' cdr1 list2
+                         else car2 :: merge' list1 cdr2
+    and split' list = match list with
+        | []              -> ([], [])
+        | [_] as list'    -> (list', [])
+        | car::cadr::cddr -> let (list1, list2) = split' cddr
+                             in  (car::list1, cadr::list2)
+    and sort' list = match list with
+        | []             -> []
+        | _::[] as list' -> list'
+        | list           -> let (list1, list2) = split' list
+                            in merge' (sort' list1) (sort' list2)
+    in  sort' list
+;;
+
+let sort2 : int list -> int list = mergesort (<);;
+
+@
+
+
+361.3
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: mergesort.ml,v 361.2 2006-03-03 14:36:12-08 - - $ *)
+d35 1
+@
+
+
+361.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: mergesort.ml,v 361.1 2006-03-03 14:25:51-08 - - $ *)
+d33 1
+a33 1
+let sort1 : int list -> int list -> int list = msort (<);;
+d62 1
+a62 1
+let sort2 : int list -> int list -> int list = mergesort (<);;
+@
+
+
+361.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: mergesort.ml,v 342.1 2004-03-16 17:03:57-08 - - $ *)
+d33 1
+a33 1
+let sort1 = msort (<);;
+d62 1
+a62 1
+let sort2 = mergesort (<);;
+@
+
+
+342.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: mergesort.ml,v 341.1 2004-02-09 17:36:33-08 - - $ *)
+d9 1
+a9 1
+let rec merge less list1 list2 = match (list1, list2) with
+d13 3
+a15 3
+                  -> if less car1 car2
+                     then car1 :: merge less cdr1 list2
+                     else car2 :: merge less list1 cdr2
+d20 1
+a20 1
+    | _::[] as list'  -> (list', [])
+d25 1
+a25 1
+let rec msort less list = match list with
+d29 2
+a30 2
+                        in merge less (msort less list1)
+                                      (msort less list2)
+d41 1
+a41 1
+let mergesort less list =
+d46 1
+a46 1
+                      -> if less car1 car2
+d51 1
+a51 1
+        | _::[] as list'  -> (list', [])
+@
+
+
+341.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: mergesort.ml,v 330.3 2003-01-28 12:19:12-08 - - $ *)
+d33 1
+a33 1
+let msortlt = msort (<);;
+d62 2
+a63 2
+(*
+* A better version using nested functions and tail recursion.
+@
+
+
+330.3
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: mergesort.ml,v 330.2 2003-01-28 11:25:26-08 - - $ *)
+d6 1
+d9 1
+a9 2
+let rec merge less arglist1 arglist2 =
+    match (arglist1, arglist2) with
+d16 1
+a16 1
+    ;;
+d18 1
+a18 2
+let rec split list =
+    match list with
+d23 1
+a23 1
+    ;;
+d25 1
+a25 2
+let rec msort less list =
+    match list with
+d31 1
+a31 1
+    ;;
+d37 2
+a38 1
+* parameters internally.
+d46 1
+a46 1
+                      -> if less car1 car1
+d60 1
+a60 1
+    ;;
+d62 2
+@
+
+
+330.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: mergesort.ml,v 330.1 2003-01-28 11:11:50-08 - - $ *)
+d8 2
+a9 2
+let rec merge less list1 list2 =
+    match (list1, list2) with
+d12 2
+a13 2
+    | ((list1 as car1::cdr1), (list2 as car2::cdr2))
+                  -> if less car1 cdr1
+d21 1
+a21 1
+    | one as _::[]    -> (one, [])
+d28 5
+a32 4
+    | []   -> []
+    | list -> let (list1, list2) = split list
+              in merge less (msort less list1)
+                            (msort less list2)
+d35 1
+a35 1
+let msortlt = msort (<);
+d43 1
+a43 1
+    let rec merge list1 list2 = match (list1, list2) with
+d46 5
+a50 5
+        | ((list1 as car1::cdr1), (list2 as car2::cdr2))
+                      -> if less car1 cdr1
+                         then car1 :: merge less cdr1 list2
+                         else car2 :: merge less list1 cdr2
+    and rec split list = match list with
+d52 2
+a53 2
+        | one as _::[]    -> (one, [])
+        | car::cadr::cddr -> let (list1, list2) = split cddr
+d55 6
+a60 5
+    and rec sort list = match list with
+        | []   -> []
+        | list -> let (list1, list2) = split list
+                  in merge (sort list1) (sort list2)
+    in  sort list
+@
+
+
+330.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id$ *)
+d5 1
+d8 2
+a9 1
+let merge less list1 list2 = match (list1, list2) with
+d12 1
+a12 1
+    | (list1 as car1::cdr1, list2 as car2::cdr2)
+d14 2
+a15 2
+                     then head1 :: merge less tail1 list2
+                     else head2 :: merge less list1 tail2
+d18 42
+@

@@ -1,0 +1,130 @@
+head	330.3;
+access;
+symbols;
+locks;
+comment	@; @;
+
+
+330.3
+date	2003.01.02.23.54.07;	author -;	state -;
+branches;
+next	330.2;
+
+330.2
+date	2003.01.02.23.50.28;	author -;	state -;
+branches;
+next	330.1;
+
+330.1
+date	2003.01.02.23.43.00;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+330.3
+log
+@-
+@
+text
+@(* $Id: power.ml,v 330.2 2003-01-02 15:50:28-08 - - $ *)
+
+(*
+* Power function.
+* power n a = a ** n
+* Computed recursively and also tail-recursively.
+* Runs in O(log2 n) time.  O(n) time is not acceptable.
+* Note:  we put the power first so that it can be curried.
+*)
+
+(*
+* Utility fns.
+*)
+let compose f g x = f (g x);;
+let odd n         = n mod 2 <> 0;;
+let even          = compose not odd;;
+let swap fn x y   = fn y x;;
+
+(*
+* powerr - recursive version
+*)
+let rec powerr n a =
+    match n with
+    | 0            -> 1.
+    | n when n < 0 -> powerr (- n) (1. /. a)
+    | n when odd n -> a *. powerr (n - 1) a
+    | n            -> powerr (n / 2) (a *. a)
+    ;;
+
+(*
+* power - more efficient tail recursive version
+*)
+let power n a =
+    let rec power' n a result =
+        match n with
+        | 0            -> result
+        | n when odd n -> power' (n - 1) a (result *. a)
+        | n            -> power' (n / 2) (a *. a) result
+    in  if n < 0 then power' (- n) (1. /. a) 1.
+                 else power' n a 1.
+    ;;
+
+(*
+* Make use of some of these functions by currying.
+*)
+let square = power 2;;
+let cube   = power 3;;
+let iiito  = swap power 3.;;
+let ivto   = swap power 4.;;
+
+@
+
+
+330.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id: power.ml,v 330.1 2003-01-02 15:43:00-08 - - $ *)
+d15 3
+a17 2
+let odd n = n mod 2 <> 0;;
+let even = compose not odd;;
+d43 3
+d48 2
+@
+
+
+330.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+(* $Id$ *)
+d21 3
+a23 2
+let powerr n a = match n with
+    | 0 -> 1
+d25 2
+a26 2
+    | n when odd n -> a * powerr (n - 1) a
+    | n -> powerr (n / 2) (a *. a)
+d33 7
+a39 6
+    let power' result n a = match n with
+        | 0 -> result
+        | n when odd n -> power' (result *. a) (n - 1) a
+        | n -> power' result (n / 2) (a *. a)
+    in  if n < 0 then power' 1. (- n) (1. /. a)
+                 else power' 1. n a
+d43 1
+a43 1
+let cube = power 3;;
+@
