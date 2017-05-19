@@ -1,0 +1,159 @@
+1. (DONE) Read the assignment carefully, and take notes.
+2. (Incomplete) Carefully read and take notes on the man page for dc(1)
+3. Experiment with dc(1). Study its:
+   - input format
+   - output format
+   - error messages
+   - exit status
+4. Mess around with map in Ocaml.
+5. Review and take notes on strcmp
+6. Reading assgt:
+   - http://www2.ucsc.edu/courses/cmps112-wm/:/Languages/ocaml/think-ocaml/
+7. (Incomplete) Take notes on Piazza questions
+8. (Done?) Compile a list of all the example programs that are known to be
+   useful, and figure them out. Make a list of all the ocaml stuff that I'll
+   need to know so that I can experiment with it and know what it means.
+
+Assignment notes:
+* This assignment will implement a desk calculator that is a subset of
+  dc(1).
+  - What is dc(1)?
+* The program will read a single file (if specified), and then read stdin.
+* Implement the following functions: + - * / % ^ c d f l p s
+  - What are all of these?
+* Implement own version of bigint by representing an integer by a product
+  of a sign with a list of integers.
+  - The largest value in Ocaml is 2^62 - 1
+    > This is one bit less than what you might normally expect. This is
+      because one bit in each word is used for tagging.
+      --> What is tagging?
+  - No using int or bigint modules
+* The ideal representation therefore would be to use eight-digit numbers
+  in a list.
+  - Why?
+* However, in order to make sure the lists are working - WHICH IS THE
+  POINT OF THE ASSIGNMENT - you can only store one digit in each element
+  of a list. This is wasteful, but possibly makes the representation
+  easier. The dc utility uses character arrays with two decimal digits
+  per byte.
+* Since arithmetic operation proceed from lowest order digit to highest,
+  represent your numbers with the lowest order digit at the front of the
+  list and the leftmost digit at the end.
+* NO LOOPS. All iteration should be done via recursion, and whenever
+  possible, by using higher-order functions like map.
+* First implement input and output of numbers. Makes sure your output
+  duplicates dc for very large numbers. Note that an underscore
+  prefixing a number makes it negative. The minus sign is strictly for
+  subtraction.
+* Next, implement addition and subtraction. To do this, you will need two
+  functions add and sub which just compare signs and then call add' or sub'
+  as appropriate to do the work on their absolute values. When you subtract,
+  make sure the first agrument is always the larger one.
+* You will need a function cmp which returs a comparison value in the same
+  way as does strcmp in C. This can move from the low order digits to the
+  high order digits tail recursively, stopping at the end of the shorter
+  list, or by maintaining an actual comparison when the two lists turn
+  out to be the same length.
+* Make sure to always canonicalize your answers by deleting leading 0
+  digits. This is only an issue with absolute subtraction, since addition
+  can only lengthen the number. All other operations are implemented
+  in terms of addition and subtraction.
+  - Huh, that's kind of cool.
+* To implement multiplication, you add appropriate elements of the right
+  column.
+  - The what?
+* To implement division, you add appropriate elements of the left column.
+  The remainder is just whatever is left over after finishing the division,
+  so your division function should return two results as a tuple, namely
+  the quotient and remainder, and the main module then ignores the one not
+  wanted.
+* Exponentiation will then be trivial, since it is a simple matter to call
+  the other functions.
+
+Piazza Notes:
+* Makefile need not be edited
+* All examples and starter code is fair game to use.
+* Use Stack and List from the code provided
+* The provided bigint module bigint.ml is okay to use.
+* Negative exponents return 0, as with
+  - $echo "4 _2 ^p" | dc
+* We must break lines longer than 70 chars. Use String.length and String.sub
+  when printing.
+* To understand "columns" related to part 9, examine the provided code for
+  egyptian multiplication and division.
+* arithmetic/muldivrem are the correct algorithms and we need to make these
+  work with the bigint from bigint.ml
+* bigint.ml already has some functionality implemented, and maindc.ml already
+  handles input. Find the functions that need to be edited and design the
+  logic needed for different cases.
+* Any actual implementation you do should be in the .ml files - you don't need
+  to change any other files. The starter code will build as is, so you can run
+  ocamldc and see how it works so far. For example, absolute addition is
+  already implemented in bigint.ml, but you will need to add functions for
+  subtraction, etc.
+* We need to handle numbers with more than 63 bits (largest int in ocaml)
+* Take a look at registers.ml
+* No decimals, just integers are used.
+* The program should end after accepting the file, not on user input.
+* Any question about what the output should look like may be answered by using
+  dc.
+* To remove leading zeros, since numbers are stored with the highest order
+  digits at the front of the list, just check to see if the first digit is 0,
+  and delete it by cdring down the list for a non-zero digit.
+*
+
+Notes on man 1 dc:
+* Reverse-Polish
+* Unlimited precision
+* Normally reads from stdin; any args are filenames, and these are executed
+  before reading from stdin.
+* A reverse-polish calculator stores numbers on a stack. Entering a number
+  pushes it onto the stack. Operations pop the stack and push the results.
+* "_" for negative. "-" is the binary operator for subtraction.
+* Separate successive numbers with newlines or spaces.
+* c:
+  - Clears the stack, rendering it empty.
+* d:
+  - Duplicates the value on the top of the stack, pushing another copy of it.
+    Thus ``4d*p'' computes 4 squared and prints it.
+* f:
+  - Prints the entire contents of the stack without altering anything. This is
+    a good command to use if you are lost or want to figure out what the effect
+    of some command has been.
+* lr:
+  - Copy the value in register r and push it onto the stack. This does not
+    alter the contents of r.
+* p:
+  - Prints the value on the top of the stack, without altering the stack. A
+    newline is printed after the value.
+* sr:
+  - Pop the value off the top of the stack and store it into register r.
+
+Useful code:
+* Makefile
+* Stack and List from the code provided
+* bigint.ml
+* String.length and String.sub
+* arithmetic/muldivrem
+* maindc.ml
+* registers.ml
+
+Interactive Use:
+* ocaml can be used interactively by calling ocaml.
+* You will need to add it to your $PATH
+
+What To Submit:
+* Makefile
+* bigint.ml
+* bigint.mli
+* maindc.ml
+* scanner.mll
+
+Note that scanner.ml is a file generated and should be made by the Makefile.
+Also, dc.ml is a debugging tool, not to be submitted. Testing will be done
+on the ocamlrun script ocamldc, which should be runnable from the command
+line.
+
+Testing:
+* Test data will be fed to dc(1) as well as to your program and the output
+  checked with diff(1).
