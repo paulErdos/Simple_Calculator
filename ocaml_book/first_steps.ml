@@ -1,3 +1,6 @@
+open Printf;;
+(*
+
 (* Chapter 1: Way of the Program *)
 (* 1.6: First program *)
 print_int 4;;
@@ -84,7 +87,6 @@ print_string what's_really_going_on;;
     the value assigned by let only exists in the expression after 'in' *)
 print_string "\n2.7:\n";;
 let x = 0;;
-open Printf;;
 
 printf "x: %d\n" x;;
 let x = 9999 in x + 1;;
@@ -276,10 +278,208 @@ let add3 i = match i with
 
 printf "Matching for an integer in an integer expression:\n";;
 printf "Applying an integer: %d\n" (add3 0);;
-printf "Applying a float: %d\n" (add3 3.141);;
+(* printf "Applying a float: %d\n" (add3 3.141);; *)
 
 (* Chapter 5: Recursive Functions *)
 (* 5.1: Recursion *)
 printf "\n5.1:\n";;
 
+(* To define a recursive function, you have to say "let rec" *)
+let rec countdown n =
+    if n < 0
+        then (
+            printf "Blastoff!\n";
+        )
+        else (
+            printf "%d\n" n;
+            countdown (n - 1);
+            () (* Why is this necessary? *)
+        );;
 
+countdown 9;;
+
+(* 5.2: Infinite Recursion *)
+printf "\n5.2:\n";;
+
+(* 5.3: Mutually Recursive Functions *)
+printf "\n5.3:\n";;
+
+(* Use "and" to tell ocaml to compile both functions *)
+(* Notice that the "let rec" applies to both functions *)
+let
+rec even x =
+    printf "Checking evenness of %d\n" x;
+    if x = 0
+        then true
+    else
+        odd (x - 1)
+and odd x =
+    printf "Checking oddness of  %d\n" x;
+    if x = 0
+        then false
+    else even (x - 1);;
+
+even 5;;
+
+(* 5.4: Tail-end Recursion *)
+printf "\n5.4:\n";;
+
+let rec rec_sum n =
+    if n = 1
+        then 1
+    else n + (rec_sum (n - 1));;
+
+(* Anything higher than 737963 stack overflows *)
+(*
+printf "sum from 1000000 to 1: %d\n" (rec_sum 1000000);;
+*)
+
+(* Same, done tail recursively *)
+(* We define a helper function... *)
+let rec sum_helper accum n =
+    if n = 1
+        then (accum + 1)
+    else (sum_helper (accum + n) (n - 1));;
+
+(* And a call function. *)
+(* Note the currying: "sum_helper 0" is sum_helper with accum = 0 and the other
+   argument open *)
+let sum = sum_helper 0;;
+printf "sum from 1000000 to 1: %d\n" (sum 1000000);;
+(* I think, based on how this is done, that it just won't stack overflow *)
+
+(* Chapter 6: Algorithms *)
+(* 6.1: Square Roots *)
+printf "\n6.1:\n";;
+
+(* Chapter 7: Strings *)
+(* 7.1: A string is a sequence *)
+printf "\n7.1:\n";;
+
+let fruit = "banana";;
+let first_letter = fruit.[0];;
+let second_letter = String.get fruit 1;;
+
+printf "%c\n" first_letter;;
+printf "%c\n" second_letter;;
+
+(* Strings are mutable! *)
+(* This is deprecated:
+fruit.[1]<-'x';;
+Instead use: *)
+Bytes.set fruit 1 'x';;
+printf "%s\n" fruit;;
+
+(* 7.2: String.length *)
+printf "\n7.2:\n";;
+
+let len = String.length fruit;;
+printf "%d\n" len;;
+printf "%c\n" fruit.[(String.length fruit) - 1];;
+
+(* 7.3: Substrings *)
+printf "\n7.3:\n";;
+
+let middle word =
+    let len = String.length word - 2 in String.sub word 1 len
+
+let a_word = "pumpernickel";;
+printf "%s\n" a_word;;
+printf "%s\n" (middle a_word);;
+
+(* 7.4: String traversal *)
+printf "\n7.4:\n";;
+
+let rec traverse_print s =
+    printf "%c\n" s.[0];
+    let len = String.length s in
+        if len = 1
+            then ()
+        else traverse_print (String.sub s 1 (len - 1));;
+
+traverse_print "foobar";;
+
+let prefixes = "ABCDEFGH";;
+let suffix   = "ack";;
+
+let rec ducklings prefixes suffix =
+    printf "%s\n" ((String.sub prefixes 0 1) ^ suffix);
+    let len = String.length prefixes in
+    if len = 1 then ()
+    else ducklings (String.sub prefixes 1 (len - 1)) suffix;;
+
+ducklings prefixes suffix;;
+
+let rec find_helper current sample letter =
+    if sample.[current] = letter then current
+    else if current = ((String.length sample) - 1) then -1
+    else find_helper (current + 1) sample letter;;
+
+let find = find_helper 0;;
+
+printf "q in abc?: %d\n" (find "abc" 'q');;
+printf "c in abc?: %d\n" (find "abc" 'c');;
+
+(* 7.6: String comparison *)
+printf "\n7.6:\n";;
+
+let word = "banana";;
+if word = "banana"
+    then printf "All right, bananas.\n";;
+
+let is_bananas word = print_string (
+    match word with
+        "bananas" -> "Your string is bananas!\n"
+        | w when w < "bananas" -> "Your string is less than bananas!\n"
+        | _ -> "Your string is more than bananas!\n");;
+
+is_bananas "bananar";;
+is_bananas "bananas";;
+is_bananas "bananat";;
+
+*)
+
+(* Chapter 8: Lists *)
+(* 8.1: A list is a sequence *)
+printf "\n8.1:\n";;
+
+let l1 = [10; 20; 30];;
+let l2 = [l1; l1];;
+let l3 = 'a'::'b'::'c'::[];;
+
+(* The cons operator "::" prepends an element to a list *)
+let rec listify_helper accumulator input =
+    if (String.length input) = 0 then accumulator
+    else
+        let last = ((String.length input) - 1) in
+        let accumulator = input.[last]::accumulator in
+        let input = (String.sub input 0 last) in
+        listify_helper accumulator input;;
+let listify = (listify_helper []);;
+
+let foo = "abcde";;
+let foo_listified = listify foo;;
+
+let () = List.iter (printf "%c\n") foo_listified;;
+
+(* 8.2: List operations *)
+printf "\n8.2:\n";;
+
+(* "@" concatenates lists *)
+
+let l4 = [1; 2];;
+let l5 = [3; 4];;
+let l4l5 = l4@l5;;
+
+let () = List.iter (printf "%d\n") l4l5;;
+
+(* 8.3: List iteration, mapping, and folding *)
+printf "\n8.3:\n";;
+
+let add3 e = e + 3 in List.map add3 forward;;
+
+
+(* Chapter 9: (SKIPPED) *)
+(* Chapter 10: (SKIPPED) *)
+(* Chapter 11: Arrays *)
+(* And that's probably enough for now. *)

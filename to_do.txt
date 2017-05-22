@@ -1,16 +1,29 @@
-1. (DONE) Read the assignment carefully, and take notes.
-2. (Incomplete) Carefully read and take notes on the man page for dc(1)
-3. Experiment with dc(1). Study its:
+*. (DONE) Read the assignment carefully, and take notes.
+*. (Incomplete) Carefully read and take notes on the man page for dc(1)
+*. Experiment with dc(1).
+   (Done for test0)
+   Study its:
    - input format
+     > the .in files in Resources/Score/
+     > Push numbers onto the stack by writing them on a line and pressing enter,
+       i.e., push numbers onto newlines.
+     > "_" means negative
+     > "f" means print the stack without altering anything.
+     > "c" clears the stack
+     > "d" duplicates the value on the top of the stack, pushing another copy
+       of it.
+       --> From an empty stack, "7df" makes a stack of two "7"s
    - output format
+     > Counting from 1, line length is maximum 70 = 69 chars + '\'
    - error messages
    - exit status
-4. Mess around with map in Ocaml.
-5. Review and take notes on strcmp
-6. Reading assgt:
+*. Mess around with map in Ocaml.
+*. Review and take notes on strcmp
+*. Learn OCaml:
+*. (Done enough. Still to read: Arrays, Lists) Reading assgt:
    - http://www2.ucsc.edu/courses/cmps112-wm/:/Languages/ocaml/think-ocaml/
-7. (Incomplete) Take notes on Piazza questions
-8. (Done?) Compile a list of all the example programs that are known to be
+*. (Incomplete) Take notes on Piazza questions
+*. (Done?) Compile a list of all the example programs that are known to be
    useful, and figure them out. Make a list of all the ocaml stuff that I'll
    need to know so that I can experiment with it and know what it means.
 
