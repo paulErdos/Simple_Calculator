@@ -1,5 +1,4 @@
 open Printf;;
-(*
 
 (* Chapter 1: Way of the Program *)
 (* 1.6: First program *)
@@ -436,8 +435,6 @@ let is_bananas word = print_string (
 is_bananas "bananar";;
 is_bananas "bananas";;
 is_bananas "bananat";;
-
-*)
 
 (* Chapter 8: Lists *)
 (* 8.1: A list is a sequence *)
