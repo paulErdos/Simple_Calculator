@@ -1,31 +1,33 @@
-*. (DONE) Read the assignment carefully, and take notes.
-*. (Incomplete) Carefully read and take notes on the man page for dc(1)
-*. Experiment with dc(1).
-   (Done for test0)
-   Study its:
-   - input format
-     > the .in files in Resources/Score/
-     > Push numbers onto the stack by writing them on a line and pressing enter,
-       i.e., push numbers onto newlines.
-     > "_" means negative
-     > "f" means print the stack without altering anything.
-     > "c" clears the stack
-     > "d" duplicates the value on the top of the stack, pushing another copy
-       of it.
-       --> From an empty stack, "7df" makes a stack of two "7"s
-   - output format
-     > Counting from 1, line length is maximum 70 = 69 chars + '\'
-   - error messages
-   - exit status
-*. Mess around with map in Ocaml.
-*. Review and take notes on strcmp
-*. Learn OCaml:
-*. (Done enough. Still to read: Arrays, Lists) Reading assgt:
-   - http://www2.ucsc.edu/courses/cmps112-wm/:/Languages/ocaml/think-ocaml/
-*. (Incomplete) Take notes on Piazza questions
-*. (Done?) Compile a list of all the example programs that are known to be
-   useful, and figure them out. Make a list of all the ocaml stuff that I'll
-   need to know so that I can experiment with it and know what it means.
+* (DONE) Read the assignment carefully, and take notes.
+* (Incomplete) Carefully read and take notes on the man page for dc(1)
+* Experiment with dc(1).
+  (Done for test0)
+  Study its:
+  - input format
+    > the .in files in Resources/Score/
+    > Push numbers onto the stack by writing them on a line and pressing enter,
+      i.e., push numbers onto newlines.
+    > "_" means negative
+    > "f" means print the stack without altering anything.
+    > "c" clears the stack
+    > "d" duplicates the value on the top of the stack, pushing another copy
+      of it.
+      --> From an empty stack, "7df" makes a stack of two "7"s
+  - output format
+    > Counting from 1, line length is maximum 70 = 69 chars + '\'
+  - error messages
+  - exit status
+* Review and take notes on strcmp
+* Learn OCaml:
+  - (Done enough. Still to read: Arrays, Lists) Reading assgt:
+    - http://www2.ucsc.edu/courses/cmps112-wm/:/Languages/ocaml/think-ocaml/
+  - Mess around with map in Ocaml.
+* (Incomplete) Take notes on Piazza questions
+* (Done?) Compile a list of all the example programs that are known to be
+  useful, and figure them out. Make a list of all the ocaml stuff that I'll
+  need to know so that I can experiment with it and know what it means.
+* Figure out the starter code and how it works together.
+
 
 Assignment notes:
 * This assignment will implement a desk calculator that is a subset of

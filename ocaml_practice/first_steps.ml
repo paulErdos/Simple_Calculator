@@ -476,7 +476,7 @@ let () = List.iter (printf "%d\n") l4l5;;
 (* 8.3: List iteration, mapping, and folding *)
 printf "\n8.3:\n";;
 
-let add3 e = e + 3 in List.map add3 forward;;
+(*let add3 e = e + 3 in List.map add3 forward;; *)
 
 
 (* Chapter 9: (SKIPPED) *)
