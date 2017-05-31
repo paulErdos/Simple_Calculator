@@ -17,7 +17,7 @@ type binop_t = bigint -> bigint -> bigint
 (* begin my code for test0 *)
 let rec print_correctly_helper line_limit counter line =
     if (String.length line) = 1 then (
-        printf "%s\n" line;
+        printf "%s\n%!" line;
     )
     (* If the counter isn't over the line limit, AND
        if we still have stuff to print *)

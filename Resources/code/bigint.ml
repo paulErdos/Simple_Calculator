@@ -45,7 +45,7 @@ module Bigint = struct
                    in  strcat ""
                        ((if sign = Pos then "" else "-") ::
                         (map string_of_int reversed))
-
+
     let rec add' list1 list2 carry = match (list1, list2, carry) with
         | list1, [], 0       -> list1
         | [], list2, 0       -> list2
@@ -60,8 +60,11 @@ module Bigint = struct
         then Bigint (neg1, add' value1 value2 0)
         else zero
 
+(* Begin my code for test2 *)
+    (* let sub = add *)
     let sub = add
 
+(* End my code for test2 *)
     let mul = add
 
     let div = add
