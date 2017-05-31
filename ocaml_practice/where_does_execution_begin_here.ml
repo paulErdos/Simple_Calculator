@@ -24,7 +24,7 @@ let long_stringy_integer =
     "311111111111111111111111111111111111111111111111111111111111111111110"^
     "411111111111111111111111111111111111111111111111111111111111111111110";;
 
-(*
+(**)
 let rec print_correctly_helper line_limit counter line =
     if (String.length line) = 1 then (
         printf "%s\n" line;
@@ -50,8 +50,8 @@ let rec print_correctly_helper line_limit counter line =
 let print_correctly = (print_correctly_helper 70 0);;
 
 print_correctly long_stringy_integer;;
-*)
-
+(**)
+(*
 let rec fill_stack_helper thestack input =
     if (String.length input) != 0 then (
         Stack.push input.[0] thestack;
@@ -65,7 +65,8 @@ let thestack = string_to_stack long_stringy_integer;;
 
 Stack.iter (printf "%c") thestack;;
 printf "\n\n";;
-
+*)
+(*
 let rec print_stack_correctly_helper line_limit counter thestack =
     if (Stack.is_empty thestack) then ( printf "\n"; )
     (* If the counter isn't at the limit *)
@@ -85,3 +86,20 @@ let rec print_stack_correctly_helper line_limit counter thestack =
 let print_stack_correctly = (print_stack_correctly_helper 70 0);;
 
 print_stack_correctly thestack;;
+*)
+
+(*
+let thestack = Stack.create ();
+let int1 =
+999999999999999999999999999999999999999999999999999999999999999999999999999999;;
+
+Stack.push int1 thestack;
+Stack.push int1 thestack;
+Stack.push int1 thestack;
+Stack.push int1 thestack;
+
+let rec print_number_correctly line_limit counter thenumber =
+    if thenumber != 0 then (
+        print_int 
+    )
+*)

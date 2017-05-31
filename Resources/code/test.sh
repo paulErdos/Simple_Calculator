@@ -5,4 +5,3 @@ cd testing
 mk.build
 make clean
 mk.test
-rm *out

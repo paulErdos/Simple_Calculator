@@ -14,7 +14,37 @@ let pop = Stack.pop
 let ord thechar = int_of_char thechar
 type binop_t = bigint -> bigint -> bigint
 
+(* begin my code for test0 *)
+let rec print_correctly_helper line_limit counter line =
+    if (String.length line) = 1 then (
+        printf "%s\n" line;
+    )
+    (* If the counter isn't over the line limit, AND
+       if we still have stuff to print *)
+    else if counter < (line_limit - 1) then (
+        (* Print the letter at the front of the string *)
+        print_char line.[0];
+        (* Then print the rest! *)
+        let length = ((String.length line) - 1) in
+        let line' = (String.sub line 1 length) in
+            print_correctly_helper line_limit (counter + 1) line';
+    )
+    (* Else, we are at the line limit so *)
+    else (
+        (* Print a delimiter and a newline *)
+        print_string "\\\n";
+        (* Reset the counter *)
+        (* Then print the rest! *)
+        print_correctly_helper line_limit 0 line;
+    );;
+let print_correctly = (print_correctly_helper 70 0);;
+
+(*
 let print_number number = printf "%s\n%!" (string_of_bigint number)
+*)
+let print_number number = print_correctly (string_of_bigint number)
+
+(* end my code for test0 *)
 
 let print_stackempty () = printf "stack empty\n%!"
 
@@ -52,7 +82,7 @@ let execute (thestack: stack_t) (oper: char) =
         | ' '  -> ()
         | _    -> printf "0%o is unimplemented\n%!" (ord oper)
     with Stack.Empty -> print_stackempty()
-
+
 let toploop (thestack: stack_t) inputchannel =
     let scanbuf = Lexing.from_channel inputchannel in
     let rec toploop () = 
@@ -63,7 +93,10 @@ let toploop (thestack: stack_t) inputchannel =
                  | Operator oper       -> execute thestack oper
                  );
              toploop ()
-        with End_of_file -> printf "End_of_file\n%!";
+        (* begin my code for test0 *)
+        (* with End_of_file -> printf "End_of_file\n%!"; *)
+        with End_of_file -> printf "%!";
+        (* end my code for test0 *)
     in  toploop ()
 
 let readfiles () =
