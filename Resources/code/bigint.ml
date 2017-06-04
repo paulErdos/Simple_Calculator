@@ -55,33 +55,7 @@ module Bigint = struct
           let sum = car1 + car2 + carry
           in  sum mod radix :: add' cdr1 cdr2 (sum / radix)
 
-    let add (Bigint (neg1, value1)) (Bigint (neg2, value2)) =
-        if neg1 = neg2
-        then Bigint (neg1, add' value1 value2 0)
-        else if neg1 = Pos
-        then sub value1 value2
-        else sub value2 value1
-
 (* Begin my code for test2 *)
-    (* let sub = add *)
-let rec compare' value1 value2 =
-    if List.length value1 = 0 && List.length value2 = 0
-    then 0
-    else if List.length value1 = List.length value2 then
-        if List.hd value1 = List.hd value2
-            then compare' (List.tl value1) (List.tl value2)
-        else if List.hd value1 > List.hd value2
-            then 1
-        else
-            -1
-    else if List.length value1 > List.length value2
-        then 1
-    else
-        -1
-
-let compare value1 value2 =
-    compare' (List.rev value1) (List.rev value2)
-
     let rec sub' list1 list2 carry = match (list1, list2, carry) with
         | list1, [], 0       -> list1
         | [], list2, 0       -> list2
@@ -91,23 +65,52 @@ let compare value1 value2 =
           if car1 < car2
           then let dif = (car1 + 10) - (car2 + carry)
           in dif :: sub' cdr1 cdr2 1
-          else let dif = car1 - car2
+          else let dif = car1 - (car2 + carry)
           in dif :: sub' cdr1 cdr2 0
+
+    let rec bigint_compare' value1 value2 =
+        if List.length value1 = 0 && List.length value2 = 0
+        then 0
+        else if List.length value1 = List.length value2 then
+            if List.hd value1 = List.hd value2
+                then bigint_compare' (List.tl value1) (List.tl value2)
+            else if List.hd value1 > List.hd value2
+                then 1
+            else
+                -1
+        else if List.length value1 > List.length value2
+            then 1
+        else
+            -1
+
+    let bigint_compare value1 value2 =
+        bigint_compare' (List.rev value1) (List.rev value2)
 
     let sub (Bigint (neg1, value1)) (Bigint (neg2, value2)) =
         if neg1 = neg2 && neg1 = Pos
-            then if (compare value1 value2) > 0
+            then if (bigint_compare value1 value2) > 0
                 then Bigint (Pos, sub' value1 value2 0)
-            else if (compare value1 value2) < 0
+            else if (bigint_compare value1 value2) < 0
                 then Bigint (Neg, sub' value2 value1 0)
             else zero
         else if neg1 = neg2 && neg1 = Neg
-            then if (compare value1 value2) > 0
+            then if (bigint_compare value1 value2) > 0
                 then Bigint (Neg, sub' value1 value2 0)
-            else if (compare value1 value2) < 0
+            else if (bigint_compare value1 value2) < 0
                 then Bigint (Pos, sub' value2 value1 0)
             else zero
         else Bigint (neg1, add' value1 value2 0)
+
+    let add (Bigint (neg1, value1)) (Bigint (neg2, value2)) =
+        if neg1 = neg2
+        then Bigint (neg1, add' value1 value2 0)
+        (* else zero *)
+        else if neg1 = Pos
+        then sub (Bigint (neg1, value1)) (Bigint (Pos, value2))
+        else sub (Bigint (neg2, value2)) (Bigint (Pos, value1))
+
+    (* let sub = add *)
+
 
 (* End my code for test2 *)
     let mul = add
