@@ -58,10 +58,30 @@ module Bigint = struct
     let add (Bigint (neg1, value1)) (Bigint (neg2, value2)) =
         if neg1 = neg2
         then Bigint (neg1, add' value1 value2 0)
-        else zero
+        else if neg1 = Pos
+        then sub value1 value2
+        else sub value2 value1
 
 (* Begin my code for test2 *)
     (* let sub = add *)
+let rec compare' value1 value2 =
+    if List.length value1 = 0 && List.length value2 = 0
+    then 0
+    else if List.length value1 = List.length value2 then
+        if List.hd value1 = List.hd value2
+            then compare' (List.tl value1) (List.tl value2)
+        else if List.hd value1 > List.hd value2
+            then 1
+        else
+            -1
+    else if List.length value1 > List.length value2
+        then 1
+    else
+        -1
+
+let compare value1 value2 =
+    compare' (List.rev value1) (List.rev value2)
+
     let rec sub' list1 list2 carry = match (list1, list2, carry) with
         | list1, [], 0       -> list1
         | [], list2, 0       -> list2
@@ -75,13 +95,19 @@ module Bigint = struct
           in dif :: sub' cdr1 cdr2 0
 
     let sub (Bigint (neg1, value1)) (Bigint (neg2, value2)) =
-             if neg1 != neg2 && neg1 = Neg
-        then Bigint (neg1, add' value1 value2 0)
-        else if neg1 != neg2 && neg1 = Pos
-        then Bigint (neg1, add' value1 value2 0)
-        else if neg1 = neg2 && neg1 = Pos
-        then Bigint (neg1, sub' value1 value2 0)
-        else Bigint (neg1, add' value2 value1 0)
+        if neg1 = neg2 && neg1 = Pos
+            then if (compare value1 value2) > 0
+                then Bigint (Pos, sub' value1 value2 0)
+            else if (compare value1 value2) < 0
+                then Bigint (Neg, sub' value2 value1 0)
+            else zero
+        else if neg1 = neg2 && neg1 = Neg
+            then if (compare value1 value2) > 0
+                then Bigint (Neg, sub' value1 value2 0)
+            else if (compare value1 value2) < 0
+                then Bigint (Pos, sub' value2 value1 0)
+            else zero
+        else Bigint (neg1, add' value1 value2 0)
 
 (* End my code for test2 *)
     let mul = add
