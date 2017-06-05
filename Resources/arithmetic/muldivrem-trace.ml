@@ -43,7 +43,7 @@ let rem (dividend, divisor) =
 #trace divrem' ;;
 
 
-let result = mul (35, 26);;
+let result = mul (10, 1);;
 print_int result;;
 print_string "\n";;
 

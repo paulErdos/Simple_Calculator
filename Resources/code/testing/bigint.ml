@@ -1,4 +1,4 @@
-(* $Id: bigint.ml,v 1.5 2014-11-11 15:06:24-08 - - $ *)
+(* $Id: bigint.ml,v 2.5 2014-11-11 15:06:24-08 - - $ *)
 
 open Printf
 
@@ -68,12 +68,12 @@ module Bigint = struct
           else let dif = car1 - (car2 + carry)
           in dif :: sub' cdr1 cdr2 0
 
-    let rec bigint_compare' value1 value2 =
+    let rec value_compare' value1 value2 =
         if List.length value1 = 0 && List.length value2 = 0
         then 0
         else if List.length value1 = List.length value2 then
             if List.hd value1 = List.hd value2
-                then bigint_compare' (List.tl value1) (List.tl value2)
+                then value_compare' (List.tl value1) (List.tl value2)
             else if List.hd value1 > List.hd value2
                 then 1
             else
@@ -83,20 +83,20 @@ module Bigint = struct
         else
             -1
 
-    let bigint_compare value1 value2 =
-        bigint_compare' (List.rev value1) (List.rev value2)
+    let value_compare value1 value2 =
+        value_compare' (List.rev value1) (List.rev value2)
 
     let sub (Bigint (neg1, value1)) (Bigint (neg2, value2)) =
         if neg1 = neg2 && neg1 = Pos
-            then if (bigint_compare value1 value2) > 0
+            then if (value_compare value1 value2) > 0
                 then Bigint (Pos, sub' value1 value2 0)
-            else if (bigint_compare value1 value2) < 0
+            else if (value_compare value1 value2) < 0
                 then Bigint (Neg, sub' value2 value1 0)
             else zero
         else if neg1 = neg2 && neg1 = Neg
-            then if (bigint_compare value1 value2) > 0
+            then if (value_compare value1 value2) > 0
                 then Bigint (Neg, sub' value1 value2 0)
-            else if (bigint_compare value1 value2) < 0
+            else if (value_compare value1 value2) < 0
                 then Bigint (Pos, sub' value2 value1 0)
             else zero
         else Bigint (neg1, add' value1 value2 0)
@@ -110,11 +110,47 @@ module Bigint = struct
         else sub (Bigint (neg2, value2)) (Bigint (Pos, value1))
 
     (* let sub = add *)
-
-
 (* End my code for test2 *)
-    let mul = add
 
+(* Begin my code for test3 *)
+let double number = add number number
+
+let rec mul' (multiplier, powerof2, multiplicand') =
+    if (value_compare powerof2 multiplier) > 0
+    then multiplier, [0]
+    else
+        let Bigint(neg_pow, double_powerof2) =
+            double (Bigint (Pos, powerof2))
+        in let Bigint(neg_mul, double_multiplicand') =
+            double (Bigint (Pos, multiplicand'))
+        in let remainder, product = (
+             printf "Multiplier: ";
+             List.iter (printf "%d") multiplier;
+             printf ", Double_powerof2: ";
+             List.iter (printf "%d") double_powerof2;
+             printf ", Double_multiplicand: ";
+             List.iter (printf "%d") double_multiplicand';
+             printf "\n";
+             mul' (multiplier, double_powerof2, double_multiplicand')
+        )
+        in if (value_compare remainder powerof2) < 0
+             then remainder, product
+             else
+                let Bigint (neg_dif, val_dif) =
+                    sub (Bigint (Pos, remainder)) (Bigint (Pos, powerof2))
+                in let Bigint (neg_sum, val_sum) =
+                    add (Bigint (Pos, product)) (Bigint (Pos, multiplicand'))
+                in val_dif, val_sum
+
+let mul (Bigint (neg1, multiplier)) (Bigint (neg2, multiplicand)) =
+    if neg1 = neg2
+    then let remainder, product = mul' (multiplier, [1], multiplicand)
+    in Bigint (Pos, product)
+    else let remainder, product = mul' (multiplier, [1], multiplicand)
+    in Bigint (Neg, product)
+
+(*    let mul = add*)
+(* End my code for test3 *)
     let div = add
 
     let rem = add
