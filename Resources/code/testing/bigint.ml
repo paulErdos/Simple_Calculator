@@ -86,20 +86,26 @@ module Bigint = struct
     let value_compare value1 value2 =
         value_compare' (List.rev value1) (List.rev value2)
 
+    let rec canonicalize (Bigint (neg, value)) =
+        let value = List.rev value in
+        if (List.hd value) = 0
+            then canonicalize (Bigint (neg, (List.rev (List.tl value))))
+        else Bigint(neg, (List.rev value))
+
     let sub (Bigint (neg1, value1)) (Bigint (neg2, value2)) =
         if neg1 = neg2 && neg1 = Pos
             then if (value_compare value1 value2) > 0
-                then Bigint (Pos, sub' value1 value2 0)
+                then canonicalize (Bigint (Pos, sub' value1 value2 0))
             else if (value_compare value1 value2) < 0
-                then Bigint (Neg, sub' value2 value1 0)
+                then canonicalize (Bigint (Neg, sub' value2 value1 0))
             else zero
         else if neg1 = neg2 && neg1 = Neg
             then if (value_compare value1 value2) > 0
-                then Bigint (Neg, sub' value1 value2 0)
+                then canonicalize (Bigint (Neg, sub' value1 value2 0))
             else if (value_compare value1 value2) < 0
-                then Bigint (Pos, sub' value2 value1 0)
+                then canonicalize (Bigint (Pos, sub' value2 value1 0))
             else zero
-        else Bigint (neg1, add' value1 value2 0)
+        else canonicalize (Bigint (neg1, add' value1 value2 0))
 
     let add (Bigint (neg1, value1)) (Bigint (neg2, value2)) =
         if neg1 = neg2
@@ -124,14 +130,14 @@ let rec mul' (multiplier, powerof2, multiplicand') =
         in let Bigint(neg_mul, double_multiplicand') =
             double (Bigint (Pos, multiplicand'))
         in let remainder, product = (
-             printf "Multiplier: ";
-             List.iter (printf "%d") multiplier;
+(*             printf "Multiplier: ";
+             List.iter (printf "%d") (List.rev multiplier);
              printf ", Double_powerof2: ";
-             List.iter (printf "%d") double_powerof2;
+             List.iter (printf "%d") (List.rev double_powerof2);
              printf ", Double_multiplicand: ";
-             List.iter (printf "%d") double_multiplicand';
+             List.iter (printf "%d") (List.rev double_multiplicand');
              printf "\n";
-             mul' (multiplier, double_powerof2, double_multiplicand')
+  *)           mul' (multiplier, double_powerof2, double_multiplicand')
         )
         in if (value_compare remainder powerof2) < 0
              then remainder, product
@@ -140,7 +146,15 @@ let rec mul' (multiplier, powerof2, multiplicand') =
                     sub (Bigint (Pos, remainder)) (Bigint (Pos, powerof2))
                 in let Bigint (neg_sum, val_sum) =
                     add (Bigint (Pos, product)) (Bigint (Pos, multiplicand'))
-                in val_dif, val_sum
+                in (
+    (*                printf "remainder: ";
+                    List.iter (printf "%d") (List.rev remainder);
+                    printf ", product: ";
+                    List.iter (printf "%d") (List.rev product);
+                    printf "\n";
+*)
+                    val_dif, val_sum
+                )
 
 let mul (Bigint (neg1, multiplier)) (Bigint (neg2, multiplicand)) =
     if neg1 = neg2
