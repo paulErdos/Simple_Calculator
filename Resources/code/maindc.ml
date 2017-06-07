@@ -46,7 +46,10 @@ let print_number number = print_correctly (string_of_bigint number)
 
 (* end my code for test0 *)
 
-let print_stackempty () = printf "stack empty\n%!"
+(* Begin my code for test5 *)
+(*let print_stackempty () = printf "stack empty\n%!"*)
+let print_stackempty () = printf "dc: stack empty\n%!"
+(* End my code for test5 *)
 
 let executereg (thestack: stack_t) (oper: char) (reg: int) =
     try match oper with

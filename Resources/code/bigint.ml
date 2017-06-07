@@ -62,11 +62,25 @@ module Bigint = struct
         | list1, [], carry   -> sub' list1 [carry] 0
         | [], list2, carry   -> sub' [carry] list2 0
         | car1::cdr1, car2::cdr2, carry ->
+          printf "sub': ";
+          List.iter (printf "%d") list1;
+          printf " ";
+          List.iter (printf "%d") list2;
+          printf "\n";
           if car1 < car2
           then let dif = (car1 + 10) - (car2 + carry)
-          in dif :: sub' cdr1 cdr2 1
+          in (
+            printf "dif1: %d\n" dif;
+            dif :: sub' cdr1 cdr2 1
+          )
+          else if car1 = car2 && carry != 0
+          then let dif = (car1 + 10) - (car2 + carry)
+          in dif :: sub' cdr1 cdr2 carry
           else let dif = car1 - (car2 + carry)
-          in dif :: sub' cdr1 cdr2 0
+          in (
+            printf "dif2: %d\n" dif;
+            dif :: sub' cdr1 cdr2 0
+          )
 
     let rec value_compare' value1 value2 =
         if List.length value1 = 0 && List.length value2 = 0
@@ -87,12 +101,27 @@ module Bigint = struct
         value_compare' (List.rev value1) (List.rev value2)
 
     let rec canonicalize (Bigint (neg, value)) =
-        let value = List.rev value in
-        if (List.hd value) = 0
-            then canonicalize (Bigint (neg, (List.rev (List.tl value))))
-        else Bigint(neg, (List.rev value))
+        printf " Canonicalize: ";
+        List.iter (printf "%d") (List.rev value);
+        printf "\n";
+        printf " Canonicalize: List.hd value: %d\n" (List.hd (List.rev value));
+(*        let value = List.rev value in *)
+        if (List.hd (List.rev value)) = 0
+            then canonicalize (Bigint (neg, (List.rev (List.tl (List.rev value)))))
+        else (
+            printf "Canonicalized: ";
+            List.iter (printf "%d") (List.rev value);
+            printf "\n";
+            printf "Canonicalize:\n";
+            Bigint(neg, value)
+        )
 
     let sub (Bigint (neg1, value1)) (Bigint (neg2, value2)) =
+        printf "Sub:\n";
+        List.iter (printf "%d") value1;
+        printf " ";
+        List.iter (printf "%d") value2;
+        printf "\n";
         if neg1 = neg2 && neg1 = Pos
             then if (value_compare value1 value2) > 0
                 then canonicalize (Bigint (Pos, sub' value1 value2 0))
@@ -119,55 +148,122 @@ module Bigint = struct
 (* End my code for test2 *)
 
 (* Begin my code for test3 *)
-let double number = add number number
+    let double number = add number number
 
-let rec mul' (multiplier, powerof2, multiplicand') =
-    if (value_compare powerof2 multiplier) > 0
-    then multiplier, [0]
-    else
-        let Bigint(neg_pow, double_powerof2) =
-            double (Bigint (Pos, powerof2))
-        in let Bigint(neg_mul, double_multiplicand') =
-            double (Bigint (Pos, multiplicand'))
-        in let remainder, product = (
-(*             printf "Multiplier: ";
-             List.iter (printf "%d") (List.rev multiplier);
-             printf ", Double_powerof2: ";
-             List.iter (printf "%d") (List.rev double_powerof2);
-             printf ", Double_multiplicand: ";
-             List.iter (printf "%d") (List.rev double_multiplicand');
-             printf "\n";
-  *)           mul' (multiplier, double_powerof2, double_multiplicand')
+    let rec mul' (multiplier, powerof2, multiplicand') =
+        if (value_compare powerof2 multiplier) > 0
+        then multiplier, [0]
+        else
+            let Bigint(neg_pow, double_powerof2) =
+                double (Bigint (Pos, powerof2))
+            in let Bigint(neg_mul, double_multiplicand') =
+                double (Bigint (Pos, multiplicand'))
+            in let remainder, product =
+                 mul' (multiplier, double_powerof2, double_multiplicand')
+            in if (value_compare remainder powerof2) < 0
+                 then remainder, product
+                 else
+                    let Bigint (neg_dif, val_dif) =
+                        sub (Bigint (Pos, remainder)) (Bigint (Pos, powerof2))
+                    in let Bigint (neg_sum, val_sum) =
+                        add (Bigint (Pos, product)) (Bigint (Pos, multiplicand'))
+                    in
+                        val_dif, val_sum
+
+    let mul (Bigint (neg1, multiplier)) (Bigint (neg2, multiplicand)) =
+        if neg1 = neg2
+        then let remainder, product = mul' (multiplier, [1], multiplicand)
+        in Bigint (Pos, product)
+        else let remainder, product = mul' (multiplier, [1], multiplicand)
+        in Bigint (Neg, product)
+
+    let rec divrem' (dividend, powerof2, divisor') =
+        printf "divrem'1:\n";
+        List.iter (printf "%d") (List.rev dividend);
+        printf " ";
+        List.iter (printf "%d") (List.rev powerof2);
+        printf " ";
+        List.iter (printf "%d") (List.rev divisor');
+        printf "\n";
+        if (value_compare divisor' dividend) > 0
+        then (
+            printf "Done doubling.\n";
+            List.iter (printf "%d") (List.rev dividend);
+            printf " ";
+            List.iter (printf "%d") (List.rev powerof2);
+            printf " ";
+            List.iter (printf "%d") (List.rev divisor');
+            printf "\n";
+            [0], dividend
         )
-        in if (value_compare remainder powerof2) < 0
-             then remainder, product
-             else
-                let Bigint (neg_dif, val_dif) =
-                    sub (Bigint (Pos, remainder)) (Bigint (Pos, powerof2))
-                in let Bigint (neg_sum, val_sum) =
-                    add (Bigint (Pos, product)) (Bigint (Pos, multiplicand'))
-                in (
-    (*                printf "remainder: ";
-                    List.iter (printf "%d") (List.rev remainder);
-                    printf ", product: ";
-                    List.iter (printf "%d") (List.rev product);
-                    printf "\n";
-*)
-                    val_dif, val_sum
+        else
+            let Bigint (neg_pow, double_powerof2) =
+                double (Bigint (Pos, powerof2))
+            in let Bigint (neg_divisor', double_divisor') =
+                double (Bigint (Pos, divisor'))
+            in let quotient, remainder =
+                 divrem' (dividend, double_powerof2, double_divisor')
+            in
+                printf "\n>>";
+                List.iter (printf "%d") quotient;
+                printf " ";
+                List.iter (printf "%d") remainder;
+                printf "\n";
+                if (value_compare remainder divisor') < 0
+                 then (
+                    quotient, remainder
+                 )
+                 else (
+                    printf "marker\n";
+                    let Bigint(neg_sum, val_sum) =
+                        add (Bigint (Pos, quotient)) (Bigint (Pos, powerof2))
+                    in printf "sub:\n";
+                       List.iter (printf "%d") divisor';
+                       printf "\n";
+                        let Bigint (neg_dif, val_dif) =
+                        sub (Bigint (Pos, remainder)) (Bigint (Pos, divisor'))
+                    in (
+                        printf ">";
+                        List.iter (printf "%d") (List.rev val_sum);
+                        printf " ";
+                        List.iter (printf "%d") (List.rev val_dif);
+                        printf "\n";
+                        val_sum, val_dif
+                    )
                 )
 
-let mul (Bigint (neg1, multiplier)) (Bigint (neg2, multiplicand)) =
-    if neg1 = neg2
-    then let remainder, product = mul' (multiplier, [1], multiplicand)
-    in Bigint (Pos, product)
-    else let remainder, product = mul' (multiplier, [1], multiplicand)
-    in Bigint (Neg, product)
+    let divrem (dividend, divisor') = divrem' (dividend, [1], divisor')
 
-(*    let mul = add*)
-(* End my code for test3 *)
+    let div (Bigint (neg_dividend, val_dividend))
+            (Bigint (neg_divisor, val_divisor)) =
+        if neg_dividend = neg_divisor
+        then let quotient, remainder = divrem (val_dividend, val_divisor)
+        in Bigint (Pos, quotient)
+        else let quotient, remainder = divrem (val_dividend, val_divisor)
+        in Bigint (Neg, quotient)
+
+    let rem (Bigint (neg_dividend, val_dividend))
+            (Bigint (neg_divisor, val_divisor)) =
+        if neg_dividend = neg_divisor
+        then let quotient, remainder = divrem (val_dividend, val_divisor)
+        in (
+            List.iter (printf "%d ") remainder;
+            printf "foooooood\n";
+            Bigint (Pos, remainder)
+        )
+        else let quotient, remainder = divrem (val_dividend, val_divisor)
+        in (
+            List.iter (printf "%d") remainder;
+            printf "\n";
+            Bigint (Neg, remainder)
+        )
+
+(*    let mul = add
     let div = add
-
     let rem = add
+*)
+
+(* End my code for test3 *)
 
     let pow = add
 
