@@ -11,12 +11,12 @@ let ldexp' (frac, expt) = ldexp frac expt
 
 let rec power' (base, expt, result) = match expt with
     | 0                   -> result
-    | expt when even expt -> power' (base *. base, expt / 2, result)
-    | expt                -> power' (base, expt - 1, base *. result)
+    | expt when even expt -> power' (base *(*.*) base, expt / 2, result)
+    | expt                -> power' (base, expt - 1, base *(*.*) result)
 
 let power (base, expt) =
-    if expt < 0 then power' (1. /. base, - expt, 1.)
-                else power' (base, expt, 1.)
+(*    if expt < 0 then power' (1. /. base, - expt, 1.)
+                else *) power' (base, expt, 1(*.*))
 
 let rec sqrt' (number, approx) =
     let next = (approx +. number /. approx) /. 2.
@@ -38,3 +38,4 @@ let sqrt number =
 #trace ldexp' ;;
 #trace sqrt'  ;;
 
+let foo = power (2, 10);;

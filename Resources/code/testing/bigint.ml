@@ -18,7 +18,7 @@ module Bigint = struct
     let strsub    = String.sub
     let zero      = Bigint (Pos, [])
 
-    let charlist_of_string str = 
+    let charlist_of_string str =
         let last = strlen str - 1
         in  let rec charlist pos result =
             if pos < 0
@@ -183,20 +183,94 @@ module Bigint = struct
 
     let rem (Bigint (neg_dividend, val_dividend))
             (Bigint (neg_divisor, val_divisor)) =
-        if neg_dividend = neg_divisor
-        then let quotient, remainder = divrem (val_dividend, val_divisor)
-        in Bigint (Pos, remainder)
-        else let quotient, remainder = divrem (val_dividend, val_divisor)
-        in Bigint (Neg, remainder)
+        let quotient, remainder = divrem (val_dividend, val_divisor)
+        in 
+(*
+        printf "rem: ";
+        List.iter (printf "%d") remainder;
+        printf "\n";
+*)
+        if neg_dividend = neg_divisor 
+        then Bigint (Pos, remainder)
+        else Bigint (Neg, remainder)
+        
 
-(*    let mul = add
+(*
+    let mul = add
     let div = add
     let rem = add
 *)
-
 (* End my code for test3 *)
 
-    let pow = add
+(* Begin my code for test4 *)
+(*    let pow = add*)
+    
+(*
+    let even number = number mod 2 = 0
+*)
 
+    let even number =
+        rem (Bigint (Pos, number)) (Bigint (Pos, [2])) = zero
+
+    let rec power' (base, expt, result) = match expt with
+(*
+        | [1] -> result
+*)
+        | [0]                   -> 
+(*
+            printf "power': expt zero, result: ";
+            List.iter (printf "%d") result;
+            printf "\n";
+*)
+            result
+        | expt when even expt   -> 
+(*
+            printf "power': expt even, result: ";
+            List.iter (printf "%d") result;
+            printf "\n%!";
+*)
+            let 
+            Bigint (neg_mul, val_mul) =
+                (mul (Bigint (Pos, base)) (Bigint (Pos, base)))
+            in let
+            Bigint (neg_div, val_div) =
+                div (Bigint (Pos, expt)) (Bigint (Pos, [2]))
+            in
+            power' (val_mul, val_div, result)
+        | expt                  -> 
+(*
+            printf "power': expt odd, base: ";
+            List.iter (printf "%d") base;
+            printf "\n%!";
+            printf "power': expt odd, expt: ";
+            List.iter (printf "%d") expt;
+            printf "\n";
+            printf "List.length expt: %d" (List.length expt);
+            printf "\n%!";
+            printf "power': expt odd, result: ";
+            List.iter (printf "%d") result;
+            printf "\n%!";
+*)
+            let
+            Bigint (neg_sub, val_sub) =
+                sub (Bigint (Pos, expt)) (Bigint (Pos, [1]))
+            in let
+            Bigint (neg_mul, val_mul) =
+                mul (Bigint (Pos, base)) (Bigint (Pos, result))
+            in
+            power' (base, val_sub, val_mul)
+
+    let pow (Bigint (neg_base, val_base)) (Bigint (neg_expt, val_expt)) =
+(*
+        printf "pow, base: ";
+        List.iter (printf "%d") (List.rev val_base);
+        printf "\n%!";
+*)
+        if neg_expt = Neg then zero
+        else Bigint (neg_base, power' (val_base, val_expt, [1]))
+
+
+
+(* End my code for test4 *)
 end
 
