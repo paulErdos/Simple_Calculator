@@ -51,12 +51,49 @@ let print_number number = print_correctly (string_of_bigint number)
 let print_stackempty () = printf "dc: stack empty\n%!"
 (* End my code for test5 *)
 
+(* Begin my code for test6 *)
+
+let symbol_table = Array.make 256 (false, Bigint.zero)
+let aget = Array.get
+let aset = Array.set
+let amake = Array.make
+let ord = Char.code
+(*
+let do_command = function
+    | 'l' sym -> (
+         let entry = aget symbol_table (ord sym)
+         in match entry with
+            | false, _ -> printf "register '%c' is empty\n%!" sym
+            | true, value -> printf "%c = %g\n%!" sym value
+      )
+    | 's' (sym, value) -> (
+         aset symbol_table (ord sym) (true, value);
+         printf "%c := %g\n%!" sym value
+      )
+*)
+
+let load reg thestack =
+    let entry = aget symbol_table reg
+    in match entry with
+       | false, _ -> printf "register 0%o is empty\n%!" reg
+       | true, value -> (*printf "%c = %g\n%!" sym value*)
+                        push value thestack
+
+let store reg thestack =
+    aset symbol_table reg (true, (pop thestack))
+    (*printf "%c := %g\n%!" sym value*)
+
+
 let executereg (thestack: stack_t) (oper: char) (reg: int) =
     try match oper with
-        | 'l' -> printf "operator l reg 0%o is unimplemented\n%!" reg
-        | 's' -> printf "operator s reg 0%o is unimplemented\n%!" reg
+        | 'l' -> (* printf "operator l reg 0%o is unimplemented\n%!" reg *)
+                 load reg thestack
+        | 's' -> (* printf "operator s reg 0%o is unimplemented\n%!" reg *)
+                 store reg thestack
         | _   -> printf "0%o 0%o is unimplemented\n%!" (ord oper) reg
     with Stack.Empty -> print_stackempty()
+
+(* End my code for test6 *)
 
 let executebinop (thestack: stack_t) (oper: binop_t) =
     try let right = pop thestack
