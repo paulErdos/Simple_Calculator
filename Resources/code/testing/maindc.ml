@@ -86,10 +86,8 @@ let store reg thestack =
 
 let executereg (thestack: stack_t) (oper: char) (reg: int) =
     try match oper with
-        | 'l' -> (* printf "operator l reg 0%o is unimplemented\n%!" reg *)
-                 load reg thestack
-        | 's' -> (* printf "operator s reg 0%o is unimplemented\n%!" reg *)
-                 store reg thestack
+        | 'l' -> load reg thestack
+        | 's' -> store reg thestack
         | _   -> printf "0%o 0%o is unimplemented\n%!" (ord oper) reg
     with Stack.Empty -> print_stackempty()
 
